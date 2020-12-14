@@ -55,4 +55,9 @@ public class HotelServiceImpl implements IHotelService {
         return hotelRepository.findAllByUser(id, pageable);
     }
 
+    @Override
+    public Page<Hotel> findAllByNameContaining(String name) {
+        return hotelRepository.findAllByNameContaining(name);
+    }
+
 }

@@ -3,6 +3,7 @@ package com.casestudy.case4.controller;
 import com.casestudy.case4.model.*;
 import com.casestudy.case4.service.comment.ICommentService;
 import com.casestudy.case4.service.hotel.IHotelService;
+import com.casestudy.case4.service.image.ImageService;
 import com.casestudy.case4.service.room.IRoomService;
 import com.casestudy.case4.service.type_room.ITypeRoomService;
 import com.casestudy.case4.service.user.IUserService;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.view.RedirectView;
 import javax.xml.ws.Holder;
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -39,6 +41,8 @@ public class RoomController {
     private IHotelService iHotelService;
     @Autowired
     private ICommentService iCommentService;
+    @Autowired
+    private ImageService imageService;
 
     @ModelAttribute("typeRooms")
     public Iterable<TypeRoom> findAllTypeRoom(){
@@ -128,6 +132,20 @@ public class RoomController {
         iRoomService.save(room);
         model.addAttribute("roomHotel", new RoomForm());
         return new RedirectView("/user");
+    }
+    // details room Tuan Anh them vao
+    @GetMapping("/user/room-details/{id}")
+    public ModelAndView detailRoom(@PathVariable Long id, Pageable pageable){
+//        Optional<Room> room=iRoomService.findById(id);
+        Room room = iRoomService.findAllById(id);
+        Page<Room> list= iRoomService.findAllByHotelId(id, pageable);
+        List<Image> imageList= imageService.findImagesByRoomId(id);
+        ModelAndView modelAndView= new ModelAndView("roomDetails");
+        modelAndView.addObject("images", imageList);
+        modelAndView.addObject("room", room);
+        modelAndView.addObject("imageAlone", room.getImage());
+        modelAndView.addObject("listRoom", list);
+        return modelAndView;
     }
 
 }

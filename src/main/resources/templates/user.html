@@ -107,9 +107,14 @@
                     <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
                         <li role="presentation"><a role="menuitem" tabindex="-1" th:href="@{/logout}"
                                                    class="glyphicon glyphicon-user"> LOGOUT</a></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1"
-                                                   th:href="@{/user/edit-user/__${userCurrent.id}__}"
-                                                   class="glyphicon glyphicon-log-in">Tài Khoản</a></li>
+                        <li role="presentation">
+                            <form th:action="@{/user/edit-user/__${userCurrent.id}__}" method="post">
+                                <input type="submit" value="Tài Khoản">
+                            </form>
+<!--                            <a role="menuitem" tabindex="-1"-->
+<!--                                                   th:href="@{/user/edit-user/__${userCurrent.id}__}"-->
+<!--                                                   class="glyphicon glyphicon-log-in">Tài Khoản</a>-->
+                        </li>
                         <li role="presentation" class="divider"></li>
                         <li role="presentation"><a role="menuitem" tabindex="-1" th:href="@{/user/list-hotelUser/__${userCurrent.id}__}"
                                                    class="glyphicon glyphicon-user">HOST</a></li>

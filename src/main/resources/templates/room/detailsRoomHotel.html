@@ -26,12 +26,15 @@
                     url: "/create-comment", //link này ở RequestMapping
                     success: function(comment) { // reponse này ở requestBody
                         var respContent = "";
-                        respContent += "<span>";
-                        respContent += comment.user.fullName + "</span> ";
-                        respContent += "<span> ";
-                        respContent +=  comment.content + "</span>";
-                        $("#allComment").html(respContent);
+                        respContent += "<div><span>";
+                        respContent += comment.user.fullName + "</span></div>";
+                        respContent += "<div><span> ";
+                        respContent += comment.content + "</span></div>";
+                        // $("#allComment").html(respContent);
+                        $("#allComment").prepend(respContent);
+                        $("#content").val("");
                     },  error: function(){
+
                         console.log(this.error);
                     }
                 });
@@ -100,7 +103,7 @@
     </tr>
     <tr th:each="room : ${rooms}">
         <td th:text="${room.name}"></td>
-        <td><img th:src="@{'http://localhost:8080/' + ${room.image}}" style="height: 150px;width: 150px"></td>
+        <td><a th:href="@{/user/room-details/__${room.id}__}"><img th:src="@{'http://localhost:8080/' + ${room.image}}" style="height: 150px;width: 150px"></a></td>
         <td th:text="${room.price}"></td>
         <td th:text="${room.description}"></td>
         <td th:text="${room.hotel.name}"></td>
@@ -109,13 +112,22 @@
     </tr>
 </table>
 <div class="row">
-    <div class="container">
-        <th:block th:each="comment : ${allComment}">
-            <label th:text="${comment.user.fullName}"></label><br>
-            <span th:text="${comment.content}"></span><br>
-        </th:block>
-        <div id="allComment"></div>
-    </div>
+<!--    <div class="container">-->
+<!--        <th:block th:each="comment : ${allComment}">-->
+<!--            <label th:text="${comment.user.fullName}"></label><br>-->
+<!--            <span th:text="${comment.content}"></span><br>-->
+<!--        </th:block>-->
+<!--        <div id="allComment"></div>-->
+<!--    </div>-->
+    <div id="allComment">
+    <th:block th:each="comment : ${allComment}">
+        <label th:text="${comment.user.fullName}"></label><br>
+        <div>
+            <span th:text="${comment.content}"></span>
+        </div>
+        <br>
+    </th:block>
+</div>
 </div>
 <div class="row">
     <div class="container">

@@ -94,7 +94,7 @@ public class UserController {
         }
         return modelAndView;
     }
-    @GetMapping("/user/edit-user/{id}")
+    @PostMapping("/user/edit-user/{id}")
     public ModelAndView showEditForm(@PathVariable Long id){
         Optional<User> user= iUserService.findById(id);
         ModelAndView modelAndView= new ModelAndView("user/edit");
