@@ -1,4 +1,4 @@
-package com.casestudy.case4.repository;
+package com.casestudy.case4.repository.user;
 
 
 

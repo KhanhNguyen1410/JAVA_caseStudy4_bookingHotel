@@ -2,7 +2,7 @@ package com.casestudy.case4.service.user;
 
 import com.casestudy.case4.model.User;
 import com.casestudy.case4.model.UserPrinciple;
-import com.casestudy.case4.repository.IUserRepository;
+import com.casestudy.case4.repository.user.IUserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;

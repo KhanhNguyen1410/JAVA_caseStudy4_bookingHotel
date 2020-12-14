@@ -29,19 +29,20 @@ public class CommentController {
     private ICommentService iCommentService;
     @Autowired
     private IHotelService iHotelService;
-//    @ModelAttribute("userCurrent")
-//    private User getPrincipal(){
-//        User userCurrent = null;
-//        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-//        userCurrent = iUserService.findByUserName(((UserDetails)principal).getUsername());
-//        return userCurrent;
-//    }
+    @ModelAttribute("userCurrent")
+    private User getPrincipal(){
+        User userCurrent = null;
+        Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        userCurrent = iUserService.findByUserName(((UserDetails)principal).getUsername());
+        return userCurrent;
+    }
 
     @RequestMapping(value = "/create-comment", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Comment deleteSmartphone(@RequestBody CommentForm commentForm){
         Hotel hotel= iHotelService.findAllById(commentForm.getHotel_id());
-        User user = iUserService.findAllById(commentForm.getUser_id());
+//        User user = iUserService.findAllById(commentForm.getUser_id());
+        User user= getPrincipal();
         Comment comment = new Comment(commentForm.getId(), user, hotel, commentForm.getContent(), commentForm.getRate());
         return iCommentService.save(comment);
     }

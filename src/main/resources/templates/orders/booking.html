@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:action="@{/create-booking}" method="post" th:object="${orderDetailsForm}">
+    <table border="1">
+        <tr>
+            <td>Check in</td>
+            <td><input type="date" th:field="*{checkIn}"></td>
+        </tr>
+        <tr>
+            <td>Check Out</td>
+            <td>
+                <input type="date" th:field="*{checkOut}">
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="hidden" name="id_room" th:value="${id_room}">
+                <input type="hidden" name="orderCurrent" th:value="${orderCurrent}">
+<!--                <input type="hidden" value="1L"  th:field="*{room}">-->
+<!--                <input type="hidden" value="2L" th:field="*{orders}">-->
+            </td>
+            <td><input type="submit" value="Booking"></td>
+        </tr>
+
+    </table>
+</form>
+</body>
+</html>

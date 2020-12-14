@@ -28,7 +28,6 @@
                         var respContent = "";
                         respContent += "<span>";
                         respContent += comment.user.fullName + "</span> ";
-
                         respContent += "<span> ";
                         respContent +=  comment.content + "</span>";
                         $("#allComment").html(respContent);
@@ -106,6 +105,7 @@
         <td th:text="${room.description}"></td>
         <td th:text="${room.hotel.name}"></td>
         <td th:text="${room.typeRoom.name}"></td>
+        <td><a class="btn btn-success" th:href="@{/user/create-booking/__${room.id}__}">Booking</a></td>
     </tr>
 </table>
 <div class="row">

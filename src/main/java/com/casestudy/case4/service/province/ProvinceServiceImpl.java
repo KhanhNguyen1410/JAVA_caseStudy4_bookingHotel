@@ -2,7 +2,7 @@ package com.casestudy.case4.service.province;
 
 
 import com.casestudy.case4.model.Province;
-import com.casestudy.case4.repository.ProvinceRepository;
+import com.casestudy.case4.repository.province.ProvinceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

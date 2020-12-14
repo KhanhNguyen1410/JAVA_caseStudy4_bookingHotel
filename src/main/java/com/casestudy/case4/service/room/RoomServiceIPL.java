@@ -38,4 +38,9 @@ public class RoomServiceIPL implements IRoomService{
     public Page<Room> findAllByHotelId(Long id, Pageable pageable) {
         return iRoomRepository.findAllByHotelId(id, pageable);
     }
+
+    @Override
+    public Room findAllById(Long id) {
+        return iRoomRepository.findAllById(id);
+    }
 }

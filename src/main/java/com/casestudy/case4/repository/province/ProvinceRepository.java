@@ -1,4 +1,4 @@
-package com.casestudy.case4.repository;
+package com.casestudy.case4.repository.province;
 
 //import com.example.demo.model.Province;
 import com.casestudy.case4.model.Province;

@@ -8,5 +8,6 @@ import org.springframework.data.repository.query.Param;
 
 public interface IRoomService extends GeneralService<Room> {
     Page<Room>  findAllByHotelId(@Param("id") Long id, Pageable pageable);
+    Room findAllById(Long id);
 //    Page<Room> findAllByHotelId(Long id, Pageable pageable);
 }

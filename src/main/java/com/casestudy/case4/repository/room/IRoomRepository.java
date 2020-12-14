@@ -18,4 +18,5 @@ public interface IRoomRepository extends JpaRepository<Room, Long> {
 //    @Modifying
     @Query(value = "select * from room r where r.hotel_id = :id", nativeQuery = true)
     Page<Room> findAllByHotelId(@Param("id") Long id, Pageable pageable);
+    Room findAllById(Long id);
 }

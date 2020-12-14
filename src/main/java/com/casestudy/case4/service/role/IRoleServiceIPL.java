@@ -1,7 +1,7 @@
 package com.casestudy.case4.service.role;
 
 import com.casestudy.case4.model.Role;
-import com.casestudy.case4.repository.province.IRoleRepository;
+import com.casestudy.case4.repository.role.IRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -68,6 +68,11 @@ public class HomeController {
         model.addAttribute("message", "Đăng xuất thành công");
         return "logout";
     }
+    @GetMapping("/test")
+    public String logoutPa1ge(Model model) {
+        model.addAttribute("message", "Đăng xuất thành công");
+        return "test";
+    }
 
     @GetMapping("/")
     public String homePage(Model model, Pageable pageable) {

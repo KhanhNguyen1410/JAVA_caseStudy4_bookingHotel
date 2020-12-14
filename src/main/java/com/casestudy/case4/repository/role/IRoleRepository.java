@@ -1,4 +1,4 @@
-package com.casestudy.case4.repository.province;
+package com.casestudy.case4.repository.role;
 
 import com.casestudy.case4.model.Role;
 import org.springframework.data.jpa.repository.JpaRepository;

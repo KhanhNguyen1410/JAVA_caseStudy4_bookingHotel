@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<table>
+    <tr>
+        <td>User</td>
+        <td><span th:text="${orderDetails.orders.user.fullName}"></span></td>
+    </tr>
+    <tr>
+        <td>check in</td>
+        <td><span th:text="${orderDetails.checkIn}"></span></td>
+    </tr>
+    <tr>
+        <td>check in</td>
+        <td><span th:text="${orderDetails.checkOut}"></span></td>
+    </tr>
+    <tr>
+        <td>price</td>
+        <td><span th:text="${((orderDetails.checkOut)-(orderDetails.checkIn)) * orderDetails.room.price }"></span></td>
+    </tr>
+    <tr>
+        <td><a class="btn btn-success" th:href="@{/home}">Home</a></td>
+    </tr>
+</table>
+</body>
+</html>

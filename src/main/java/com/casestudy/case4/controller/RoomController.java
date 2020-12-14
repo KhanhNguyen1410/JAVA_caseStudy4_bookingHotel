@@ -55,10 +55,10 @@ public class RoomController {
         }
         return isAdmin;
     }
-    @ModelAttribute("allComment")
-    public Iterable<Comment> comments(){
-        return iCommentService.findAll();
-    }
+//    @ModelAttribute("allComment")
+//    public Page<Comment> comments(){
+//        return iCommentService.findAllByHotelId();
+//    }
 
     @ModelAttribute("userCurrent")
     public User getPrincipal(){
@@ -74,7 +74,9 @@ public class RoomController {
     @GetMapping("/admin/details-hotel/{id}")
     public ModelAndView detailHotel(@PathVariable Long id, Pageable pageable){
         Page<Room> rooms=iRoomService.findAllByHotelId(id ,pageable);
+        Page<Comment> allComment = iCommentService.findAllByHotelId(id,pageable);
         ModelAndView modelAndView= new ModelAndView("room/detailsRoomHotel");
+        modelAndView.addObject("allComment",allComment);
         modelAndView.addObject("rooms",rooms);
         modelAndView.addObject("comment",new Comment());
         modelAndView.addObject("id_details", id);
@@ -84,7 +86,9 @@ public class RoomController {
     public ModelAndView detailHotelUser(@PathVariable Long id, Pageable pageable){
         Page<Room> rooms=iRoomService.findAllByHotelId(id ,pageable);
         Hotel hotel= iHotelService.findAllById(id);
+        Page<Comment> allComment = iCommentService.findAllByHotelId(id,pageable);
         ModelAndView modelAndView= new ModelAndView("room/detailsRoomHotel");
+        modelAndView.addObject("allComment",allComment);
         modelAndView.addObject("rooms",rooms);
         modelAndView.addObject("comment",new CommentForm());
         modelAndView.addObject("id_details", id);
