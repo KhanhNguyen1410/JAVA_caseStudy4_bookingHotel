@@ -1,213 +1,81 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Booking-Hotel-"Lieu"</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            crossorigin="anonymous"></script>
     <style>
-        /* Remove the navbar's default rounded borders and increase the bottom margin */
-        .navbar {
-            margin-bottom: 20px;
-            border-radius: 0;
+        .img {
+            overflow: hidden;
+            margin: auto;
+            width: 300px;
+            height: 300px;
+            perspective: 1000px;
+            -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+            box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+            border-radius: 5px;
         }
-        .panel panel-primary{
-            height: 400px;
-        }
-        
-
-        .container-fluid {
-            height: 75px;
-        }
-
-        .form-inline {
-            margin-top: 13px;
-        }
-
-        /* Remove the jumbotron's default bottom margin */
-        .jumbotron {
-            margin-bottom: 0;
-        }
-
-        /* Add a gray background color and some padding to the footer */
-        footer {
-            height: 50%;
-            background-color: #2b2b2b;
-            padding: 25px;
-        }
-
-        /* food*/
-        .container {
-            padding: 80px 120px;
-        }
-
-        .person {
-            border: 10px solid transparent;
-            margin-bottom: 25px;
-            width: 80%;
-            height: 80%;
-            opacity: 0.7;
-        }
-
-        .person:hover {
-            border-color: #f1f1f1;
-        }
-
-        .carousel-inner {
-            background: #2cecc1b5;
-            margin-top: 5px;
-            height: 600px;
-        }
-
-        .item active {
-            height: 100%;
-        }
-        body{
-            background-color: whitesmoke;
-        }
-
-        .img-responsive {
+        img {
+            transition: 0.6s;
             width: 100%;
-            height: 200px;
+        }
+        img:hover {
+            transform: scale(1.2);
+        }
+        .chuto, .chunho {
+            position: absolute;
+            z-index: 3;
+            top: 100%;
+            left: 25%;
+            transition: 0.6s;
+            opacity: 0;
+        }
+        .img:hover .chuto {
+            transform: translateY(-100px);
+            opacity: 1;
         }
     </style>
 </head>
 <body>
-<nav class="navbar navbar-inverse">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <a class="navbar-brand" href="#">Home</a>
-        </div>
-        <div class="collapse navbar-collapse" id="myNavbar">
-            <ul class="nav navbar-nav">
-                <!--                <li class="active"><a href="#">Home</a></li>-->
-                <li><a href="#">.....</a></li>
-                <li><a href="#">.....</a></li>
-                <!--                <li><a href="#">Stores</a></li>-->
-                <!--                <li><a href="#">Contact</a></li>-->
-            </ul>
-            <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <form class="form-inline">
-                        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-                        <button class="btn btn-outline-white btn-md my-2 my-sm-0 ml-3" type="submit">Search</button>
-                    </form>
-                </li>
-                <li>
-                    <a class="glyphicon glyphicon-user" type="button" data-toggle="dropdown">DANG NHAP
-                        <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu" aria-labelledby="menu1">
-                        <li role="presentation"><a role="menuitem" tabindex="-1" th:href="@{/login}" class="glyphicon glyphicon-user"> LOGIN</a></li>
-<!--                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/edit"  class="glyphicon glyphicon-pencil">   EDIT</a></li>-->
-                        <li role="presentation" class="divider"></li>
-                        <li role="presentation"><a role="menuitem" tabindex="-1" href="/logout" class="glyphicon glyphicon-log-in">  LOGOUT</a></li>
-                    </ul>
-                </li>
-                <!--                <li><a href="/login"><span class="glyphicon glyphicon-user"></span> LOGIN</a></li>-->
-                <!--                <li><a href="/logout"><span class="glyphicon glyphicon-log-in"></span> LogOut</a></li>-->
-            </ul>
-        </div>
-    </div>
-</nav>
-
-<!--<div class="jumbotron">-->
-<div id="myCarousel" class="carousel slide" data-ride="carousel">
-    <!-- Indicators -->
-    <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-    </ol>
-
-    <!-- Wrapper for slides -->
-    <div class="carousel-inner" role="listbox">
-        <div class="item active">
-            <img th:src="@{../hanoi.png}" alt="New York" width="500" height="500">
-            <div class="carousel-caption">
-                <h3>New York</h3>
-                <p>Thank you, New Yorl - A night we won't forget.</p>
-            </div>
-
-        </div>
-        <div class="item">
-            <img th:src="@{../bannerdalat.jpg}" alt="Chicago" width="500" height="500">
-            <div class="carousel-caption">
-                <h3>Chicago</h3>
-                <p>Thank you, Chicago - A night we won't forget.</p>
-            </div>
-        </div>
-        <div class="item">
-            <img th:src="@{../static/viewbien.jpg}" alt="Chicago" width="500" height="500">
-            <div class="carousel-caption">
-                <h3>Chicago</h3>
-                <p>Thank you, Chicago - A night we won't forget.</p>
-            </div>
-        </div>
-    </div>
-    <!-- Left and right controls -->
-    <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
-</div>
-<!--</div>-->
-
 <div class="container">
     <div class="row">
-        <div><span><strong>Địa điểm nổi bật</strong></span></div>
-        <div class="col-sm-4">
-            <div class="panel panel-primary">
-                <div class="panel-heading"><span><strong>Đà Nẵng</strong></span></div>
-                <div class="panel-body"><img th:src="@{/hanoi.png}" class="img-responsive"
-                                             style="width:100%" alt="Image"></div>
-                <div class="panel-footer">Nơi tình yêu bắt đầu</div>
+        <div class="col-md-4 mt-5">
+            <div class="img">
+                <img src="https://d2e5ushqwiltxm.cloudfront.net/wp-content/uploads/sites/95/2016/12/07092746/HotelMetropoleHanoi_003_LaTerrasse_du_Metropole-585x390.jpg" alt="">
+                <div class="chuto">1000 Như Anh Louis</div>
+                <div class="chunho">Hello qwerty uiop asdfg hjkl zxcv bnm</div>
             </div>
+        </div>        <div class="col-md-4 mt-5">
+        <div class="img">
+            <img src="../img/1.jpg" alt="">
+            <div class="chuto">1000 Như Anh Louis</div>
+            <div class="chunho">Hello qwerty uiop asdfg hjkl zxcv bnm</div>
         </div>
-        <div class="col-sm-4">
-            <div class="panel panel-primary">
-                <div class="panel-heading"><span><strong>Hà Nội</strong></span></div>
-                <div class="panel-body"><img th:src="@{../hoian.png}" class="img-responsive"
-                                             style="width:100%" alt="Image"></div>
-                <div class="panel-footer">NƠi tụ họp của dân tổ</div>
-            </div>
+    </div>        <div class="col-md-4 mt-5">
+        <div class="img">
+            <img src="../img/1.jpg" alt="">
+            <div class="chuto">1000 Như Anh Louis</div>
+            <div class="chunho">Hello qwerty uiop asdfg hjkl zxcv bnm</div>
         </div>
-        <div class="col-sm-4">
-            <div class="panel panel-primary">
-                <div class="panel-heading"><span><strong>Hội An</strong></span></div>
-                <div class="panel-body"><img th:src="@{/hoian.png}" class="img-responsive"
-                                             style="width:100%" alt="Image"></div>
-                <div class="panel-footer">Hội tụ tinh hoa ẩm thực</div>
-            </div>
+    </div>        <div class="col-md-4 mt-5">
+        <div class="img">
+            <img src="../img/1.jpg" alt="">
+            <div class="chuto">1000 Như Anh Louis</div>
+            <div class="chunho">Hello qwerty uiop asdfg hjkl zxcv bnm</div>
         </div>
-
     </div>
-
-<div class="container">
-    <div class="row">
-        <th:block th:each="hotel : ${list}">
-        <div class="col-sm-4">
-            <div class="panel panel-primary">
-                <div class="panel-heading"><span th:text="${hotel.name}"></span></div>
-                <div class="panel-body"><a th:href="@{/user/details-hotel/__${hotel.id}__}"><img th:src="@{'http://localhost:8080/' + ${hotel.image}}" class="img-responsive"
-                                             alt="Image"></a></div>
-                <div class="panel-footer"><span th:text="${hotel.description}"></span></div>
-            </div>
-        </div>
-        </th:block>
     </div>
-
-</div>
 </div>
 </body>
 </html>

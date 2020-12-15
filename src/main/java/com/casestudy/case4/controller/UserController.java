@@ -53,7 +53,6 @@ public class UserController {
         return isAdmin;
     }
 
-
     public User getPrincipal(){
         User userCurrent = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();

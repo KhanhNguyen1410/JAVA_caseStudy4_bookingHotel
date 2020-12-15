@@ -5,7 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Data
@@ -20,16 +20,16 @@ public class OrderDetails {
     private Room room;
     @Column(columnDefinition = "INTEGER default 0")
     private int discount;
-    @NotEmpty(message = "vui long chon ngay check in")
+//    @NotEmpty(message = "vui long chon ngay check in")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date checkIn;
-    @NotEmpty(message = "vui long chn ngay checkOut")
-    private Date checkOut;
+    private LocalDate checkIn;
+//    @NotEmpty(message = "vui long chon ngay checkOut")
+    private LocalDate checkOut;
 
     public OrderDetails() {
     }
 
-    public OrderDetails(Long id, Orders orders, Room room, int discount, @NotEmpty(message = "vui long chon ngay check in") Date checkIn, @NotEmpty(message = "vui long chn ngay checkOut") Date checkOut) {
+    public OrderDetails(Long id, Orders orders, Room room, int discount, LocalDate checkIn, LocalDate checkOut) {
         this.id = id;
         this.orders = orders;
         this.room = room;

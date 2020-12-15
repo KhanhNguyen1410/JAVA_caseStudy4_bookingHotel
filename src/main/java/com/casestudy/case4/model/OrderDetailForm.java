@@ -1,19 +1,17 @@
 package com.casestudy.case4.model;
 
-import javax.persistence.*;
-import javax.validation.constraints.NotEmpty;
-import java.util.Date;
+import java.time.LocalDate;
 
 public class OrderDetailForm {
     private Long id;
     private Long orders;
     private Long room;
-    private Date checkIn;
-    private Date checkOut;
+    private LocalDate checkIn;
+    private LocalDate checkOut;
     public OrderDetailForm() {
     }
 
-    public OrderDetailForm(Long id, Long orders, Long room, Date checkIn, Date checkOut) {
+    public OrderDetailForm(Long id, Long orders, Long room, LocalDate checkIn, LocalDate checkOut) {
         this.id = id;
         this.orders = orders;
         this.room = room;
@@ -45,19 +43,19 @@ public class OrderDetailForm {
         this.room = room;
     }
 
-    public Date getCheckIn() {
+    public LocalDate getCheckIn() {
         return checkIn;
     }
 
-    public void setCheckIn(Date checkIn) {
+    public void setCheckIn(LocalDate checkIn) {
         this.checkIn = checkIn;
     }
 
-    public Date getCheckOut() {
+    public LocalDate getCheckOut() {
         return checkOut;
     }
 
-    public void setCheckOut(Date checkOut) {
+    public void setCheckOut(LocalDate checkOut) {
         this.checkOut = checkOut;
     }
 }

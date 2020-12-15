@@ -20,7 +20,7 @@
     </tr>
     <tr>
         <td>price</td>
-        <td><span th:text="${((orderDetails.checkOut)-(orderDetails.checkIn)) * orderDetails.room.price }"></span></td>
+        <td><span th:text="${total}"></span></td>
     </tr>
     <tr>
         <td><a class="btn btn-success" th:href="@{/home}">Home</a></td>

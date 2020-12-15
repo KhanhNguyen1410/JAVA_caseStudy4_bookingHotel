@@ -53,6 +53,7 @@ public class AdminController {
         return isAdmin;
     }
 
+
     @GetMapping("/list-user")
     public ModelAndView listUser(){
 
@@ -62,15 +63,6 @@ public class AdminController {
         modelAndView.addObject("userCurrent", getPrincipal());
         return modelAndView;
     }
-
-//    @PostMapping("/edit-user")
-//    public ModelAndView updateUser(@ModelAttribute User user){
-//        iUserService.save(user);
-//        ModelAndView modelAndView= new ModelAndView("user/edit");
-//        modelAndView.addObject("user", new User());
-//        modelAndView.addObject("message", "Updated USER successful!!!");
-//        return modelAndView;
-//    }
 
     @GetMapping("/create-user")
     public ModelAndView showListForm() {

@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            crossorigin="anonymous"></script>
+    <style>
+        .img {
+            overflow: hidden;
+            margin: auto;
+            perspective: 1000px;
+            -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+            box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+            border-radius: 5px;
+        }
+        .img>img {
+            transition: 0.6s;
+            width: 100%;
+            height: 400px;
+        }
+        .img>a>img {
+            transition: 0.6s;
+            width: 100%;
+            height: 400px;
+        }
+        .img:hover img {
+            transform: scale(1.2);
+        }
+        .chuto, .chunho {
+            position: absolute;
+            z-index: 3;
+            top: 100%;
+            left: 10%;
+            transition: 0.6s;
+            opacity: 0;
+        }
+        .img:hover .chuto {
+            transform: translateY(-220px);
+            color: white;
+            text-shadow: 2px 2px #000;
+            font-size: 25px;
+            opacity: 1;
+        }
+        .abc {
+            margin-bottom: 100px;
+        }
+        body {
+            background: #fcc3a6;
+        }
+    </style>
+</head>
+<body>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#"></a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" th:href="@{/home}"><img style="height: 50px ; width: 100px" th:src="@{../static/logoM4.JPG}"> <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="#">Help</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a th:if="${userCurrent}" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                   hello <span th:text="${userCurrent.fullName}"></span>
+                </a>
+                <div th:if="${isAdmin}" class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" th:href="@{/admin/list-user}">Quản lý user</a>
+                    <a class="dropdown-item" th:href="@{/admin/list-hotel}">Quản lí hotel</a>
+                    <a class="dropdown-item" th:href="@{/admin/create-hotel}">Tạo hotel</a>
+                    <a class="dropdown-item" th:href="@{/admin/create-user}">Tạo tài khoản</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+                <div th:unless="${isAdmin}" class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a>
+                    <a class="dropdown-item"><form th:action="@{/user/edit-user/__${userCurrent.id}__}" method="post">
+                        <input type="submit" value="Tài Khoản">
+                    </form></a>
+                    <a class="dropdown-item" th:href="@{/user/list-hotelUser/__${userCurrent.id}__}">Host</a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">Something else here</a>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link disabled" href="#">Disabled</a>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+    </div>
+</nav>
+<div class="container">
+    <div class="carousel-item">
+        <img th:src="@{https://baoquocte.vn/stores/news_dataimages/dieulinh/012020/29/15/nhung-buc-anh-dep-tuyet-voi-ve-tinh-ban.jpg}" alt="...">
+        <div class="carousel-caption d-none d-md-block">
+            <h5>...</h5>
+            <p>...</p>
+        </div>
+    </div>
+</div>
+<div class="container">
+<div class="container">
+<!--    phần các thành phố-->
+    <div class="row">
+        <div class="col-md-3 mt-5 abc">
+            <div class="img">
+                <img src="https://d2e5ushqwiltxm.cloudfront.net/wp-content/uploads/sites/95/2016/12/07092746/HotelMetropoleHanoi_003_LaTerrasse_du_Metropole-585x390.jpg" width="100%" alt="">
+                <div class="chuto">1000 Như Anh Louis<br>100$</div>
+                <div class="chunho">Hello qwerty uiop asdfg hjkl zxcv bnm</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+<!--    phần các khách sạn-->
+    <div class="row">
+        <th:block th:each="hotel : ${list}">
+        <div class="col-md-4 mt-5 abc">
+            <div class="img">
+                <a th:href="@{/user/details-hotel/__${hotel.id}__}"><img width="100%" th:src="@{'http://localhost:8080/' + ${hotel.image}}" class="img-responsive"
+                                                                         alt="Image"></a>
+                <div class="chuto">
+                    <span th:text="${hotel.name}"></span><br>
+                    <span th:text="${hotel.description}"></span><br>
+                </div>
+            </div>
+        </div>
+        </th:block>
+    </div>
+</div>
+</div>
+</body>
+</html>

@@ -13,7 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.stereotype.Repository;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-
+import java.time.temporal.ChronoUnit;
+import java.time.LocalDate;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -39,11 +40,8 @@ public class OrderDetailController {
     public ModelAndView booking(@PathVariable Long id){
         ModelAndView modelAndView = new ModelAndView("/orders/booking");
         modelAndView.addObject("orderDetailsForm", new OrderDetails());
+//        Orders orders = iOrdersService.save(new Orders());
         Orders orders = new Orders();
-        Calendar calendar = Calendar.getInstance();
-        Date date = calendar.getTime();
-        orders.setDayBook(date);
-        orders.setUser(getPrincipal());
 //        Orders ordersCurrent = iOrdersService.save(orders);
 //        modelAndView.addObject("orderCurrent",ordersCurrent);
         modelAndView.addObject("orderCurrent",orders);
@@ -51,9 +49,9 @@ public class OrderDetailController {
         return modelAndView;
     }
     @PostMapping("/create-booking")
-    public ModelAndView bookingSuccess(@ModelAttribute OrderDetailForm orderDetailForm, @RequestParam("id_room") Long id_room, @RequestParam("orderCurrent") Orders orderCurrent ){
-        Calendar calendar = Calendar.getInstance();
-        Date date = calendar.getTime();
+    public ModelAndView bookingSuccess(@ModelAttribute OrderDetailForm orderDetailForm, @RequestParam("id_room") Long id_room, @ModelAttribute Orders orderCurrent ){
+//        Calendar calendar = Calendar.getInstance();
+        LocalDate date = LocalDate.now();
         Orders orders = new Orders(orderCurrent.getId(),date,orderCurrent.isStatus(),getPrincipal());
         iOrdersService.save(orders);
         Room room= iRoomService.findAllById(id_room);
@@ -62,6 +60,9 @@ public class OrderDetailController {
         iOrderDetailsService.save(orderDetails1);
         ModelAndView modelAndView = new ModelAndView("/orders/orders-success");
         modelAndView.addObject("orderDetails",orderDetails1);
+        Long time = ChronoUnit.DAYS.between(orderDetails1.getCheckIn(), orderDetails1.getCheckOut());
+        Double total = time*orderDetails1.getRoom().getPrice();
+        modelAndView.addObject("total",total);
         return modelAndView;
 
     }

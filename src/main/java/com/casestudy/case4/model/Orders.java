@@ -4,6 +4,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -12,7 +13,7 @@ public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private  Long id;
-    private Date dayBook;
+    private LocalDate dayBook;
     @Column(columnDefinition = "boolean default false")
     private boolean status;
     @ManyToOne
@@ -21,7 +22,7 @@ public class Orders {
     public Orders() {
     }
 
-    public Orders(Long id, Date dayBook, boolean status, User user) {
+    public Orders(Long id, LocalDate dayBook, boolean status, User user) {
         this.id = id;
         this.dayBook = dayBook;
         this.status = status;

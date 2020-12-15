@@ -1,9 +1,11 @@
 package com.casestudy.case4.controller;
 
 import com.casestudy.case4.model.Hotel;
+import com.casestudy.case4.model.Role;
 import com.casestudy.case4.model.User;
 import com.casestudy.case4.model.UserPrinciple;
 import com.casestudy.case4.service.hotel.IHotelService;
+import com.casestudy.case4.service.type_room.ITypeRoomService;
 import com.casestudy.case4.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -21,6 +23,8 @@ public class HomeController {
     private IUserService iUserService;
     @Autowired
     private IHotelService iHotelService;
+    @Autowired
+    private ITypeRoomService iTypeRoomService;
 
     @ModelAttribute("userCurrent")
     private User getPrincipal() {
@@ -31,6 +35,16 @@ public class HomeController {
         }
         return userCurrent;
     }
+//    @ModelAttribute("isAdmin")
+//    public boolean checkAdmin(){
+//        boolean isAdmin = false;
+//        for (Role role: getPrincipal().getRoles()){
+//            if (role.getName().equals("ROLE_ADMIN")){
+//                isAdmin = true;
+//            }
+//        }
+//        return isAdmin;
+//    }
 
     @ModelAttribute("list")
     public  Page<Hotel> homePageUser(Pageable pageable){
@@ -48,6 +62,23 @@ public class HomeController {
         model.addAttribute("province_ht", PROVINCE_HT);
         return "user";
     }
+
+    @GetMapping("/home")
+    public ModelAndView homePage(Pageable pageable){
+        Page<Hotel> list= iHotelService.findAllByStatusIsFalse(pageable);
+        ModelAndView modelAndView= new ModelAndView("home");
+        boolean isAdmin = false;
+        for (Role role: getPrincipal().getRoles()){
+            if (role.getName().equals("ROLE_ADMIN")){
+                isAdmin = true;
+            }
+        }
+        modelAndView.addObject("list", list);
+        modelAndView.addObject("isAdmin",isAdmin);
+//        modelAndView.addObject("userCurrent",getPrincipal());
+        return modelAndView;
+    }
+
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public String loginPage() {

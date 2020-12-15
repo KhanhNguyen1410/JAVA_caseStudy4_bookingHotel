@@ -26,5 +26,5 @@ public interface IHotelRepository extends JpaRepository<Hotel, Long> {
     Page<Hotel> findAllByProvince(@Param("id") Long id, Pageable pageable);
     @Query(value = "select * from hotel h where h.user_id = :id", nativeQuery = true)
     Page<Hotel> findAllByUser(@Param("id") Long id, Pageable pageable);
-    Page<Hotel> findAllByNameContaining(String name);
+//    Page<Hotel> findAllByNameContaining(String name);
 }

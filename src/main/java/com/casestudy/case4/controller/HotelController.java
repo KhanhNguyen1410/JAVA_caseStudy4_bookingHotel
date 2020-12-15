@@ -94,14 +94,7 @@ public class HotelController {
         modelAndView.addObject("userCurrent",getPrincipal());
         return modelAndView;
     }
-    @GetMapping("/home")
-    public ModelAndView homePage(Pageable pageable){
-        Page<Hotel> list= hotelService.findAllByStatusIsFalse(pageable);
-        ModelAndView modelAndView= new ModelAndView("index");
-        modelAndView.addObject("list", list);
-        modelAndView.addObject("userCurrent",getPrincipal());
-        return modelAndView;
-    }
+
 
     @GetMapping("/admin/create-hotel")
     public ModelAndView showCreateFormAdmin() {
