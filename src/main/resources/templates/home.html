@@ -107,10 +107,17 @@
                 <div th:if="${isAdmin}" class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" th:href="@{/admin/list-user}">Quản lý user</a>
                     <a class="dropdown-item" th:href="@{/admin/list-hotel}">Quản lí hotel</a>
+                    <a class="dropdown-item">
+<!--                        <a th:href="@{/list-orders}" class="btn btn-primary">list orders</a>-->
+                        <form th:action="@{/list-orders}" method="post">
+                            <input type="submit" class="btn btn-primary" value="List orders">
+                        </form>
+                    </a>
                     <a class="dropdown-item" th:href="@{/admin/create-hotel}">Tạo hotel</a>
                     <a class="dropdown-item" th:href="@{/admin/create-user}">Tạo tài khoản</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Something else here</a>
+                    <a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a>
                 </div>
                 <div th:unless="${isAdmin}" class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <div th:unless="${userCurrent}">
@@ -420,6 +427,5 @@
         </div>
     </div>
 </div>
-
 </body>
 </html>

@@ -6,5 +6,53 @@
 </head>
 <body>
 
+<form th:action="@{/list-orders-done}" method="post">
+    <input type="submit" class="btn btn-success" value="Đã thanh toán">
+</form>
+<form th:action="@{/list-orders-slacking}" method="post">
+    <input type="submit" class="btn btn-success" value="chưa thanh toán">
+</form>
+<table class="table table-active" border="1">
+<tr>
+    <th>Ngày đặt</th>
+    <th>Trạng thái</th>
+    <th>xem chi tiết</th>
+</tr>
+<tr th:each="order : ${orders}">
+    <td th:text="${order.dayBook}"></td>
+    <td th:if="${order.isStatus()}">
+        <span>Đã thanh toán</span>
+    </td><td th:unless="${order.isStatus()}">
+        <span>Đã đặt</span>
+    </td>
+    <td>
+        <button type="button" class="btn btn-primary" data-toggle="modal"
+                data-target="#modalLRForm">
+            Chi tiết
+        </button>
+    </td>
+</tr>
+</table>
+ <div class="modal" id="modalLRForm">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h4 class="modal-title">Modal Heading</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <!-- Modal body -->
+                <div class="modal-body">
+                        <div class="login-show">
+
+                        </div>
+                </div>
+                <!-- Modal footer -->
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>

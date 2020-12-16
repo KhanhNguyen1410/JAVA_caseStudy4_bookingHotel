@@ -23,7 +23,7 @@ import java.util.Calendar;
 import java.util.Date;
 
 @Controller
-@RequestMapping(value = "/admin")
+//@RequestMapping(value = "/admin")
 public class OrdersController {
     @Autowired
     private IHotelService hotelService;
@@ -68,7 +68,7 @@ public boolean checkAdmin() {
         return userCurrent;
     }
     @PostMapping("/list-orders")
-    public ModelAndView listOrders(@RequestParam Long id , Pageable pageable){
+    public ModelAndView listOrders( Pageable pageable){
         ModelAndView modelAndView = new ModelAndView("orders/list");
         Page<Orders> orders ;
     if (checkAdmin()){
@@ -81,7 +81,7 @@ public boolean checkAdmin() {
         return  modelAndView;
     }
     @PostMapping("/list-orders-done")
-    public ModelAndView listOrdersDone(@RequestParam Long id,Pageable pageable){
+    public ModelAndView listOrdersDone(Pageable pageable){
         Page<Orders> orders ;
         ModelAndView modelAndView = new ModelAndView("orders/list");
         if (checkAdmin()){
@@ -94,9 +94,16 @@ public boolean checkAdmin() {
         return modelAndView;
     }
     @PostMapping("/list-orders-slacking")
-    public ModelAndView listOrdersSlacking(@RequestParam Long id,Pageable pageable){
-        Page<Orders> orders = iOrdersService.findAllByStatusIsTrue(pageable);
+    public ModelAndView listOrdersSlacking(Pageable pageable){
+        Page<Orders> orders ;
         ModelAndView modelAndView = new ModelAndView("orders/list");
+        if (checkAdmin()){
+
+            orders = iOrdersService.findAllByStatusIsFalse(pageable);
+        }
+        else {
+            orders = iOrdersService.findAllByStatusIsFalseAndUserId(getPrincipal().getId(),pageable);
+        }
         modelAndView.addObject("orders", orders);
         return modelAndView;
     }
