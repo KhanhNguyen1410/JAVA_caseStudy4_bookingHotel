@@ -4,6 +4,7 @@ import com.casestudy.case4.model.OrderDetails;
 import com.casestudy.case4.repository.orders.IOrdersRepository;
 import com.casestudy.case4.repository.ordersdetails.IOrderDetailRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -32,4 +33,9 @@ public class OrderDetailsServiceIPL implements IOrderDetailsService {
     public void remove(Long id) {
         iOrderDetailRepository.deleteById(id);
     }
+
+//    @Override
+//    public Page<OrderDetails> findAllByOrdersId(Long id) {
+//        return iOrderDetailRepository.findAllByOrdersId(id);
+//    }
 }

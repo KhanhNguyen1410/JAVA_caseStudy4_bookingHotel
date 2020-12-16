@@ -10,12 +10,14 @@ import com.casestudy.case4.service.user.IUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
 @Controller
 public class HomeController {
@@ -26,26 +28,30 @@ public class HomeController {
     @Autowired
     private ITypeRoomService iTypeRoomService;
 
+    @ModelAttribute("isAdmin")
+    public boolean checkAdmin() {
+        boolean isAdmin = false;
+        if (getPrincipal() != null) {
+            for (Role role : getPrincipal().getRoles()) {
+                if (role.getName().equals("ROLE_ADMIN")) {
+                    isAdmin = true;
+                }
+            }
+        }
+        return isAdmin;
+    }
+
     @ModelAttribute("userCurrent")
-    private User getPrincipal() {
+    public User getPrincipal() {
         User userCurrent = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        if (principal instanceof UserDetails){
-            userCurrent = iUserService.findByUserName(((UserDetails)principal).getUsername());
+        if (principal.equals("anonymousUser")) {
+            return null;
         }
+        UserPrinciple userPrinciple = (UserPrinciple) principal;
+        userCurrent = iUserService.findByUserName(userPrinciple.getUsername());
         return userCurrent;
     }
-//    @ModelAttribute("isAdmin")
-//    public boolean checkAdmin(){
-//        boolean isAdmin = false;
-//        for (Role role: getPrincipal().getRoles()){
-//            if (role.getName().equals("ROLE_ADMIN")){
-//                isAdmin = true;
-//            }
-//        }
-//        return isAdmin;
-//    }
-
     @ModelAttribute("list")
     public  Page<Hotel> homePageUser(Pageable pageable){
        return iHotelService.findAllByStatusIsFalse(pageable);
@@ -53,29 +59,47 @@ public class HomeController {
 
     @GetMapping("/user")
     public String userPage(Model model) {
-//        model.addAttribute("userCurrent", getPrincipal());
         Long PROVINCE_HANOI = (long) 1;
+        Long PROVINCE_HCM = (long) 2;
         Long PROVINCE_DN = (long) 3;
         Long PROVINCE_HT = (long) 4;
         model.addAttribute("province_hn", PROVINCE_HANOI);
+        model.addAttribute("province_HCM", PROVINCE_HCM);
         model.addAttribute("province_dn", PROVINCE_DN);
         model.addAttribute("province_ht", PROVINCE_HT);
         return "user";
     }
 
     @GetMapping("/home")
-    public ModelAndView homePage(Pageable pageable){
+    public ModelAndView homePage(@PageableDefault(6) Pageable pageable){
         Page<Hotel> list= iHotelService.findAllByStatusIsFalse(pageable);
+        Long PROVINCE_HN = 1L;
+        Long PROVINCE_HCM = 2L;
+        Long PROVINCE_DN = 3L;
+        Long PROVINCE_HT = 4L;
         ModelAndView modelAndView= new ModelAndView("home");
-        boolean isAdmin = false;
-        for (Role role: getPrincipal().getRoles()){
-            if (role.getName().equals("ROLE_ADMIN")){
-                isAdmin = true;
-            }
-        }
         modelAndView.addObject("list", list);
-        modelAndView.addObject("isAdmin",isAdmin);
-//        modelAndView.addObject("userCurrent",getPrincipal());
+        modelAndView.addObject("user", new User());
+        modelAndView.addObject("province_HN", PROVINCE_HN);
+        modelAndView.addObject("province_HCM", PROVINCE_HCM);
+        modelAndView.addObject("province_DN", PROVINCE_DN);
+        modelAndView.addObject("province_HT", PROVINCE_HT);
+        return modelAndView;
+    }
+    @GetMapping("/")
+    public ModelAndView homePage2(@PageableDefault(6) Pageable pageable){
+        Page<Hotel> list= iHotelService.findAllByStatusIsFalse(pageable);
+        Long PROVINCE_HN = 1L;
+        Long PROVINCE_HCM = 2L;
+        Long PROVINCE_DN = 3L;
+        Long PROVINCE_HT = 4L;
+        ModelAndView modelAndView= new ModelAndView("home");
+        modelAndView.addObject("user", new User());
+        modelAndView.addObject("list", list);
+        modelAndView.addObject("province_HN", PROVINCE_HN);
+        modelAndView.addObject("province_HCM", PROVINCE_HCM);
+        modelAndView.addObject("province_DN", PROVINCE_DN);
+        modelAndView.addObject("province_HT", PROVINCE_HT);
         return modelAndView;
     }
 
@@ -94,25 +118,14 @@ public class HomeController {
         return "admin";
     }
 
-    @GetMapping("/logoutSuccessfully")
-    public String logoutPage(Model model) {
-        model.addAttribute("message", "Đăng xuất thành công");
-        return "logout";
-    }
-    @GetMapping("/test")
-    public String logoutPa1ge(Model model) {
-        model.addAttribute("message", "Đăng xuất thành công");
-        return "test";
-    }
-
-    @GetMapping("/")
-    public String homePage(Model model, Pageable pageable) {
-        model.addAttribute("user", new User());
-        return "home";
+    @GetMapping("/logoutSuccessful")
+  public RedirectView  logoutPage() {
+        return new RedirectView("/home");
     }
 
     @GetMapping("/accessDenied")
-    public String accessDenied() {
-        return "access-denied";
+    public String accessDenied(Model model) {
+        model.addAttribute("message","Truy cập không khả dụng");
+        return "home";
     }
 }

@@ -4,17 +4,10 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
-          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-            crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-            crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
-            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
-            crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+          integrity="sha384-HSMxcRTRxnN+Bdg0JdbxYKrThecOKuH5zCYotlSAcp1+c8xmyTe9GYg1l9a69psu" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
     <style>
         .img {
             overflow: hidden;
@@ -205,10 +198,11 @@
                     url: "/create-comment", //link này ở RequestMapping
                     success: function (comment) { // reponse này ở requestBody
                         var respContent = "";
-                        respContent += "<div><span>";
-                        respContent += comment.user.fullName + "</span></div>";
+                        respContent += "<div><span><strong>";
+                        respContent += comment.user.fullName + "</strong>"
+                            + comment.rate + "<span><img width=\"1.5%\" height=\"1.5%\" src=\"https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Star_icon_stylized.svg/1077px-Star_icon_stylized.svg.png\"></span>" + " </span></div>";
                         respContent += "<div><span> ";
-                        respContent += comment.content + comment.rate+ "</span></div>";
+                        respContent += comment.content + "</span></div>";
                         // $("#allComment").html(respContent);
                         $("#allComment").prepend(respContent);
                         $("#content").val("");
@@ -228,67 +222,50 @@
 <h3><a th:if="${isAdmin}" th:href="@{/admin/create-room/__${id_details}__}">tạo room</a></h3>
 <h3><a th:href="@{/home}">Trang chủ</a></h3>
 
-
+<img src="">
 <div class="container">
     <!--    phần các khách sạn-->
-<!--    <div><span><strong>Các khách sạn nổi bật</strong></span></div>-->
+    <!--    <div><span><strong>Các khách sạn nổi bật</strong></span></div>-->
     <div class="row">
         <th:block th:each="room : ${rooms}">
             <div class="col-md-4 mt-5 abc">
                 <div class="img">
-                    <a th:href="@{/user/room-details/__${room.id}__}"><img width="100%" th:src="@{'http://localhost:8080/' + ${room.image}}"></a>
+                    <a th:href="@{/user/room-details/__${room.id}__}"><img width="100%"
+                                                                           th:src="@{'http://localhost:8080/' + ${room.image}}"></a>
                     <div class="content">
                         <span th:text="${room.name}"></span><br>
                         <span th:text="${room.price}"></span><br>
                         <span th:text="${room.description}"></span><br>
-<!--                        <span th:text="${room.hotel.name}"></span><br>-->
+                        <!--                        <span th:text="${room.hotel.name}"></span><br>-->
                         <span th:text="${room.typeRoom.name}"></span><br>
-                        <span><a class="btn btn-success" th:href="@{/user/create-booking/__${room.id}__}">Booking</a></span>
+                        <span><a class="btn btn-success"
+                                 th:href="@{/user/create-booking/__${room.id}__}">Booking</a></span>
                     </div>
                 </div>
             </div>
         </th:block>
-<!--        <div class="pagination">-->
-<!--            <a th:href="@{'/home'(page=${list.number - 1})}" th:if="${list.hasPrevious()}">Previous</a>-->
-<!--            <span th:text="${list.number + 1}"></span>/<span th:text="${list.totalPages}"></span>-->
-<!--            <a th:href="@{'/home'(page=${list.number + 1})}" th:if="${list.hasNext()}">Next</a>-->
-<!--        </div>-->
+        <!--                <div class="pagination">-->
+        <!--                    <a th:href="@{'/user/details-hotel/__${id_details}__'(page=${rooms.number - 1})}" th:if="${rooms.hasPrevious()}">Previous</a>-->
+        <!--                    <span th:text="${rooms.number + 1}"></span>/<span th:text="${rooms.totalPages}"></span>-->
+        <!--                    <a th:href="@{'/user/details-hotel/__${id_details}__'(page=${rooms.number + 1})}" th:if="${rooms.hasNext()}">Next</a>-->
+        <!--                </div>-->
     </div>
 </div>
-<!--<table class="table table-active" border="1px">-->
-<!--    <tr>-->
-<!--        <th>Name</th>-->
-<!--        <th>Image</th>-->
-<!--        <th>Price</th>-->
-<!--        <th>Description</th>-->
-<!--        <th>Hotel</th>-->
-<!--        <th>Type</th>-->
-<!--        &lt;!&ndash;            <th>User Host</th>&ndash;&gt;-->
-<!--        <th>Action</th>-->
-<!--        <th>Status</th>-->
-<!--    </tr>-->
-<!--    <tr th:each="room : ${rooms}">-->
-<!--        <td th:text="${room.name}"></td>-->
-<!--        <td><a th:href="@{/user/room-details/__${room.id}__}"><img th:src="@{'http://localhost:8080/' + ${room.image}}"-->
-<!--                                                                   style="height: 150px;width: 150px"></a></td>-->
-<!--        <td th:text="${room.price}"></td>-->
-<!--        <td th:text="${room.description}"></td>-->
-<!--        <td th:text="${room.hotel.name}"></td>-->
-<!--        <td th:text="${room.typeRoom.name}"></td>-->
-<!--        <td><a class="btn btn-success" th:href="@{/user/create-booking/__${room.id}__}">Booking</a></td>-->
-<!--    </tr>-->
-<!--</table>-->
 <div class="row">
     <div class="container">
         <div id="allComment">
             <th:block th:each="comment : ${allComment}">
-                <label th:text="${comment.user.fullName}"></label>
-                <span th:text="${comment.rate}"></span><br>
-                <div>
-                    <span th:text="${comment.content}"></span>
-                </div>
-                <br>
+                <strong style="" th:text="${comment.user.fullName}+' : ' "></strong>
+                <span th:text="${comment.content}"></span><br>
+                <span th:text="${comment.rate}"></span><img width="1.5%" height="1.5%"
+                                                            th:src="@{https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Star_icon_stylized.svg/1077px-Star_icon_stylized.svg.png}">
+                <hr>
             </th:block>
+            <!--            <div class="pagination">-->
+            <!--                <a th:href="@{'/user/details-hotel/__${id_details}__'(page=${allComment.number - 1})}" th:if="${allComment.hasPrevious()}">Previous</a>-->
+            <!--                <span th:text="${allComment.number + 1}"></span>/<span th:text="${allComment.totalPages}"></span>-->
+            <!--                <a th:href="@{'/user/details-hotel/__${id_details}__'(page=${allComment.number + 1})}" th:if="${allComment.hasNext()}">Next</a>-->
+            <!--            </div>-->
         </div>
     </div>
 </div>
@@ -306,22 +283,12 @@
                 </div>
                 <div class="clearfix"></div>
             </div>
-            <table border="1">
-                <tr>
-                    <td>
-                        <input type="hidden" id="userCurrent" name="userCurrent" th:field="${userCurrent}">
-                        <input type="hidden" id="user" name="user" th:value="${userCurrent.id}">
-                        <input type="hidden" id="id_hotelCurrent" name="id_hotelCurrent" th:field="${hotelCurrent.id}">
-                        <input type="hidden" id="hotel" name="hotelCurrent" th:value="${hotelCurrent.id}">
-                        <textarea id="content" th:field="${comment.content}">
-                   </textarea>
-                    </td>
-                </tr>
-                <tr>
-                    <td><input type="submit" class="btn btn-success" value="comment"></td>
-                </tr>
-            </table>
-
+            <input type="hidden" id="userCurrent" name="userCurrent" th:field="${userCurrent}">
+            <input type="hidden" id="user" name="user" th:value="${userCurrent.id}">
+            <input type="hidden" id="id_hotelCurrent" name="id_hotelCurrent" th:field="${hotelCurrent.id}">
+            <input type="hidden" id="hotel" name="hotelCurrent" th:value="${hotelCurrent.id}">
+            <textarea id="content" style="width: 70%" rows="4" th:field="${comment.content}"></textarea><br>
+            <td><input type="submit" class="btn btn-primary" value="Comment" style="float: left"></td>
         </form>
     </div>
 </div>

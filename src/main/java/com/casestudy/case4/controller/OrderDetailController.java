@@ -29,11 +29,28 @@ public class OrderDetailController {
     @Autowired
     private IUserService iUserService;
 
+    @ModelAttribute("isAdmin")
+    public boolean checkAdmin() {
+        boolean isAdmin = false;
+        if (getPrincipal() != null) {
+            for (Role role : getPrincipal().getRoles()) {
+                if (role.getName().equals("ROLE_ADMIN")) {
+                    isAdmin = true;
+                }
+            }
+        }
+        return isAdmin;
+    }
+
     @ModelAttribute("userCurrent")
-    private User getPrincipal(){
+    public User getPrincipal() {
         User userCurrent = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        userCurrent = iUserService.findByUserName(((UserDetails)principal).getUsername());
+        if (principal.equals("anonymousUser")) {
+            return null;
+        }
+        UserPrinciple userPrinciple = (UserPrinciple) principal;
+        userCurrent = iUserService.findByUserName(userPrinciple.getUsername());
         return userCurrent;
     }
     @GetMapping("/user/create-booking/{id}")
@@ -64,6 +81,5 @@ public class OrderDetailController {
         Double total = time*orderDetails1.getRoom().getPrice();
         modelAndView.addObject("total",total);
         return modelAndView;
-
     }
 }

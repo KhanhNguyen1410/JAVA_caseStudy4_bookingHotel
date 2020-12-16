@@ -14,7 +14,7 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
             integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
             crossorigin="anonymous"></script>
-    <style>
+    <style th:fragment="homestyle">
         .img {
             overflow: hidden;
             margin: auto;
@@ -24,22 +24,27 @@
             box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
             border-radius: 5px;
         }
-        .carousel-item{
-            height: 650px;
+
+        .carousel-item {
+            height: 850px;
         }
-        .img>img {
+
+        .img > img {
             transition: 0.6s;
             width: 100%;
             height: 400px;
         }
-        .img>a>img {
+
+        .img > a > img {
             transition: 0.6s;
             width: 100%;
             height: 400px;
         }
+
         .img:hover img {
             transform: scale(1.2);
         }
+
         .content, .chunho {
             position: absolute;
             z-index: 3;
@@ -48,6 +53,7 @@
             transition: 0.6s;
             opacity: 0;
         }
+
         .img:hover .content {
             transform: translateY(-220px);
             color: white;
@@ -55,39 +61,47 @@
             font-size: 25px;
             opacity: 1;
         }
+
         .abc {
             margin-bottom: 100px;
         }
+
         /*body {*/
         /*    background: #fcc3a6;*/
         /*}*/
-        /*.navbar{*/
-        /*    position: fixed;*/
-        /*    top: 0;*/
-        /*    width:   100%;*/
-        /*}*/
+        .navbar {
+            position: fixed;
+            top: 0;
+            z-index: 1000;
+            width: 100%;
+        }
     </style>
 </head>
 <body>
 <nav th:fragment="nav" class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#"></a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
 
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" th:href="@{/home}"><a th:href="@{/home}"><img style="height: 50px ; width: 100px" th:src="@{../static/logoM4.JPG}"></a> <span class="sr-only">(current)</span></a>
+                <a class="nav-link" th:href="@{/home}"><a th:href="@{/home}"><img style="height: 50px ; width: 100px"
+                                                                                  th:src="@{../static/logoM4.JPG}"></a>
+                    <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Help</a>
             </li>
             <li class="nav-item dropdown">
-                <a th:if="${userCurrent}" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                   hello <span th:text="${userCurrent.fullName}"></span>
+                <a th:if="${userCurrent}" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                   data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    hello <span th:text="${userCurrent.fullName}"></span>
                 </a>
-                <a th:unless="${userCurrent}" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <a th:unless="${userCurrent}" class="nav-link dropdown-toggle" href="#" id="navbarDropdown"
+                   role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     <span>Đăng nhập/Đăng kí</span>
                 </a>
                 <div th:if="${isAdmin}" class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -100,22 +114,30 @@
                 </div>
                 <div th:unless="${isAdmin}" class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <div th:unless="${userCurrent}">
-                        <a class="dropdown-item" th:href="@{/login}">Đăng nhập</a>
+                        <!--                        <a class="dropdown-item" th:href="@{/login}">Đăng nhập</a>-->
+                        <a class="dropdown-item">
+                            <button type="button" class="btn btn-primary" data-toggle="modal"
+                                    data-target="#modalLRForm">
+                                Đăng Nhập
+                            </button>
+                        </a>
                         <a class="dropdown-item" th:href="@{/create-user}">Đăng kí</a>
                     </div>
                     <div th:if="${userCurrent}">
-                    <a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a>
-                    <a class="dropdown-item"><form th:action="@{/user/edit-user/__${userCurrent.id}__}" method="post">
-                        <input type="submit" value="Tài Khoản">
-                    </form></a>
-                    <a class="dropdown-item" th:href="@{/user/list-hotelUser/__${userCurrent.id}__}">Host</a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">Something else here</a>
+                        <a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a>
+                        <a class="dropdown-item">
+                            <form th:action="@{/user/edit-user/__${userCurrent.id}__}" method="post">
+                                <input type="submit" value="Tài Khoản">
+                            </form>
+                        </a>
+                        <a class="dropdown-item" th:href="@{/user/list-hotelUser/__${userCurrent.id}__}">Host</a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="#">Something else here</a>
                     </div>
                 </div>
             </li>
             <li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled</a>
+                <a class="nav-link disabled" th:href="@{logout}">Đăng xuất</a>
             </li>
         </ul>
         <form class="form-inline my-2 my-lg-0">
@@ -123,17 +145,185 @@
             <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
         </form>
     </div>
+
 </nav>
+<!--<div class="modal" id="modalLRForm">-->
+<!--    <div class="modal-dialog">-->
+<!--        <div class="modal-content">-->
+<!--            &lt;!&ndash; Modal Header &ndash;&gt;-->
+<!--            <div class="modal-header">-->
+<!--                <h4 class="modal-title">Modal Heading</h4>-->
+<!--                <button type="button" class="close" data-dismiss="modal">&times;</button>-->
+<!--            </div>-->
+<!--            &lt;!&ndash; Modal body &ndash;&gt;-->
+<!--            <div class="modal-body">-->
+<!--                <form name='f' th:action="@{/j_spring_security_check}" method='POST'>-->
+<!--                    <div class="login-show">-->
+<!--                        <h2>LOGIN</h2>-->
+<!--                        <input type="text" name="username" placeholder="Email">-->
+<!--                        <input type="password" name="password" placeholder="Password"><br>-->
+<!--                        <input type="submit" value="Đăng nhập">-->
+<!--                        <a th:href="@{/forgot-password}">Forgot password?</a>-->
+<!--                    </div>-->
+<!--                </form>-->
+<!--            </div>-->
+<!--            &lt;!&ndash; Modal footer &ndash;&gt;-->
+<!--            <div class="modal-footer">-->
+<!--                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </div>-->
+<!--</div>-->
+<!--Modal: Login / Register Form-->
+<div class="modal fade" id="modalLRForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog cascading-modal" role="document">
+        <!--Content-->
+        <div class="modal-content">
+
+            <!--Modal cascading tabs-->
+            <div class="modal-c-tabs">
+
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs md-tabs tabs-2 light-blue darken-3" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#panel7" role="tab"><i
+                                class="fas fa-user mr-1"></i>
+                            Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#panel8" role="tab"><i
+                                class="fas fa-user-plus mr-1"></i>
+                            Register</a>
+                    </li>
+                </ul>
+
+                <!-- Tab panels -->
+                <div class="tab-content">
+                    <!--Panel 7-->
+                    <div class="tab-pane fade in show active" id="panel7" role="tabpanel">
+                        <!--Body-->
+                        <form name='f' th:action="@{/j_spring_security_check}" method='POST'>
+                            <div class="modal-body mb-1">
+                                <div class="md-form form-sm mb-5">
+                                    <i class="fas fa-envelope prefix"></i>
+                                    <input type="text" name="username" id="modalLRInput10"
+                                           class="form-control form-control-sm validate">
+                                    <label data-error="wrong" data-success="right" for="modalLRInput10">Tên tài khoản</label>
+                                </div>
+
+                                <div class="md-form form-sm mb-4">
+                                    <i class="fas fa-lock prefix"></i>
+                                    <input name="password" type="password" id="modalLRInput11"
+                                           class="form-control form-control-sm validate">
+                                    <label data-error="wrong" data-success="right" for="modalLRInput11">Mật khẩu</label>
+                                </div>
+                                <div class="text-center mt-2">
+                                    <button class="btn btn-info">Đăng Nhập<i class="fas fa-sign-in ml-1"></i></button>
+                                </div>
+                            </div>
+                        </form>
+                        <!--Footer-->
+                        <div class="modal-footer">
+                            <div class="options text-center text-md-right mt-1">
+                                <p>Forgot <a href="#" class="blue-text">Password?</a></p>
+                            </div>
+                            <button type="button" class="btn btn-outline-info waves-effect ml-auto"
+                                    data-dismiss="modal">Close
+                            </button>
+                        </div>
+
+                    </div>
+                    <!--/.Panel 7-->
+
+                    <!--Panel 8-->
+                    <div class="tab-pane fade" id="panel8" role="tabpanel">
+
+                        <!--Body-->
+
+                        <div class="modal-body">
+                            <form class="information " th:action="@{/create-user}" method="post" th:object="${user}">
+                                <table>
+                                    <tbody>
+                                    <tr>
+                                        <td>fullName:</td>
+                                        <td><input th:field="*{fullName}" /></td>
+                                        <td th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">Name Error</td>
+                                    </tr>
+                                    <tr>
+                                        <td>SDT:</td>
+                                        <td><input th:field="*{phone}" /></td>
+                                        <td th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Name Error</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Address:</td>
+                                        <td><input th:field="*{address}" /></td>
+                                        <td th:if="${#fields.hasErrors('address')}" th:errors="*{address}">Name Error</td>
+                                    </tr>
+                                    <tr>
+                                        <td>age:</td>
+                                        <td><input type="number" th:field="*{age}" /></td>
+                                        <td th:if="${#fields.hasErrors('age')}" th:errors="*{age}">Name Error</td>
+                                    </tr>
+                                    <tr>
+                                        <td>Email:</td>
+                                        <td><input th:field="*{email}" /></td>
+                                        <td th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Name Error</td>
+                                    </tr>
+                                    <tr>
+                                        <td>UserName:</td>
+                                        <td><input th:field="*{userName}" /></td>
+                                        <td th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">Name Error</td>
+                                    </tr>
+                                    <tr>
+                                        <td>passWord:</td>
+                                        <td><input type="password" th:field="*{passWord}" /></td>
+                                        <td th:if="${#fields.hasErrors('passWord')}" th:errors="*{passWord}">Name Error</td>
+                                    </tr>
+                                    <tr>
+                                        <td><input type="submit" value="create" /></td>
+                                        <td></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </form>
+                        </div>
+                        <!--Footer-->
+                        <div class="modal-footer">
+                            <div class="options text-right">
+                            </div>
+                            <button type="button" class="btn btn-outline-info waves-effect ml-auto"
+                                    data-dismiss="modal">Close
+                            </button>
+                        </div>
+                    </div>
+                    <!--/.Panel 8-->
+                </div>
+
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+<!--Modal: Login / Register Form-->
+
+<div class="text-center">
+    <a href="" class="btn btn-default btn-rounded my-3" data-toggle="modal" data-target="#modalLRForm">Launch
+        Modal LogIn/Register</a>
+</div>
 <div th:fragment="slide" id="carouselExampleControls" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
-            <img class="d-block w-100" width="100%" height="100%" th:src="@{https://img.lovepik.com/photo/50081/0167.jpg_wh860.jpg}" alt="First slide">
+            <img class="d-block w-100" width="100%" height="100%"
+                 th:src="@{https://img.lovepik.com/photo/50081/0167.jpg_wh860.jpg}" alt="First slide">
         </div>
         <div class="carousel-item">
-            <img class="d-block w-100" th:src="@{https://a25hotel.com/admin/webroot/upload/image/images/anh%20maldives%208.jpg}" alt="Second slide">
+            <img class="d-block w-100"
+                 th:src="@{https://a25hotel.com/admin/webroot/upload/image/images/anh%20maldives%208.jpg}"
+                 alt="Second slide">
         </div>
         <div class="carousel-item">
-            <img class="d-block w-100" th:src="@{https://media.baodautu.vn/Images/phuongthanh/2020/07/02/4.jpg}" alt="Third slide">
+            <img class="d-block w-100" th:src="@{https://media.baodautu.vn/Images/phuongthanh/2020/07/02/4.jpg}"
+                 alt="Third slide">
         </div>
     </div>
     <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
@@ -146,72 +336,87 @@
     </a>
 </div>
 <div class="container">
-<div class="container">
-<!--    phần các thành phố-->
-    <div><span><strong>Các thành phố nổi bật</strong></span></div>
-    <div class="row">
-        <div class="col-md-3 mt-5 abc">
-            <div class="img">
-                <img th:src="@{https://cdn.luxstay.com/home/location/location_1_1559734709.png}" width="100%" alt="">
-                <div class="content">
-                    <span style="color: #52f30b">Hà Nội</span><br>
-                    <span>Hội tụ dân chơi thủ đô</span>
+    <div class="container">
+        <!--    phần các thành phố-->
+        <div><span><strong>Các thành phố nổi bật</strong></span></div>
+        <div class="row">
+            <div class="col-md-3 mt-5 abc">
+                <div class="img">
+                    <a th:href="@{/user/list-hotelProvince/__${province_HN}__}">
+                        <img th:src="@{https://cdn.luxstay.com/home/location/location_1_1559734709.png}" width="100%"
+                             alt="">
+                    </a>
+                    <div class="content">
+                        <span style="color: #52f30b">Hà Nội</span><br>
+                        <span>Hội tụ dân chơi thủ đô</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mt-5 abc">
+                <div class="img">
+                    <a th:href="@{/user/list-hotelProvince/__${province_DN}__}">
+                        <img th:src="@{https://cdn.luxstay.com/home/location/location_16_1559303173.png}" width="100%"
+                             alt="">
+                    </a>
+                    <div class="content">
+                        <span style="color: #52f30b">Đà Nẵng</span><br>
+                        <span>Nơi tình yêu bắt đầu</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mt-5 abc">
+                <div class="img">
+                    <a th:href="@{/user/list-hotelProvince/__${province_HCM}__}">
+                        <img th:src="@{https://cdn.luxstay.com/home/location/location_5_1559735011.png}" width="100%"
+                             alt="">
+                    </a>
+                    <div class="content">
+                        <span style="color: #52f30b">TP Hồ Chí Minh</span><br>
+                        <span>Không chịu ngủ anh như sài gòn</span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-3 mt-5 abc">
+                <div class="img">
+                    <a th:href="@{/user/list-hotelProvince/__${province_HT}__}">
+                        <img th:src="@{https://cdn.luxstay.com/home/location/location_6_1559786202.png}" width="100%"
+                             alt="">
+                    </a>
+                    <div class="content">
+                        <span style="color: #52f30b">Hà Tĩnh</span><br>
+                        <span>Mảnh đất anh hùng :)</span>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-3 mt-5 abc">
-            <div class="img">
-                <img th:src="@{https://cdn.luxstay.com/home/location/location_16_1559303173.png}" width="100%" alt="">
-                <div class="content">
-                    <span style="color: #52f30b">Đà Nẵng</span><br>
-                    <span>Nơi tình yêu bắt đầu</span>
+    </div>
+
+    <div class="container">
+        <!--    phần các khách sạn-->
+        <div><span><strong>Các khách sạn nổi bật</strong></span></div>
+        <div class="row" th:fragment="listHotel">
+            <th:block th:each="hotel : ${list}">
+                <div class="col-md-4 mt-5 abc">
+                    <div class="img">
+                        <a th:href="@{/user/details-hotel/__${hotel.id}__}"><img width="100%"
+                                                                                 th:src="@{'http://localhost:8080/' + ${hotel.image}}"
+                                                                                 class="img-responsive"
+                                                                                 alt="Image"></a>
+                        <div class="content">
+                            <span th:text="${hotel.name}"></span><br>
+                            <span th:text="${hotel.description}"></span><br>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-3 mt-5 abc">
-            <div class="img">
-                <img th:src="@{https://cdn.luxstay.com/home/location/location_5_1559735011.png}" width="100%" alt="">
-                <div class="content">
-                    <span style="color: #52f30b">TP Hồ Chí Minh</span><br>
-                    <span>Không chịu ngủ anh như sài gòn</span>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-3 mt-5 abc">
-            <div class="img">
-                <img th:src="@{https://cdn.luxstay.com/home/location/location_6_1559786202.png}" width="100%" alt="">
-                <div class="content">
-                    <span style="color: #52f30b">Hà Tĩnh</span><br>
-                    <span>Mảnh đất anh hùng :)</span>
-                </div>
+            </th:block>
+            <div class="pagination">
+                <a th:href="@{'/home'(page=${list.number - 1})}" th:if="${list.hasPrevious()}">Previous</a>
+                <span th:text="${list.number + 1}"></span>/<span th:text="${list.totalPages}"></span>
+                <a th:href="@{'/home'(page=${list.number + 1})}" th:if="${list.hasNext()}">Next</a>
             </div>
         </div>
     </div>
 </div>
 
-<div class="container">
-<!--    phần các khách sạn-->
-    <div><span><strong>Các khách sạn nổi bật</strong></span></div>
-    <div class="row">
-        <th:block th:each="hotel : ${list}">
-        <div class="col-md-4 mt-5 abc">
-            <div class="img">
-                <a th:href="@{/user/details-hotel/__${hotel.id}__}"><img width="100%" th:src="@{'http://localhost:8080/' + ${hotel.image}}" class="img-responsive"
-                                                                         alt="Image"></a>
-                <div class="content">
-                    <span th:text="${hotel.name}"></span><br>
-                    <span th:text="${hotel.description}"></span><br>
-                </div>
-            </div>
-        </div>
-        </th:block>
-        <div class="pagination">
-            <a th:href="@{'/home'(page=${list.number - 1})}" th:if="${list.hasPrevious()}">Previous</a>
-            <span th:text="${list.number + 1}"></span>/<span th:text="${list.totalPages}"></span>
-            <a th:href="@{'/home'(page=${list.number + 1})}" th:if="${list.hasNext()}">Next</a>
-        </div>
-    </div>
-</div>
-</div>
 </body>
 </html>

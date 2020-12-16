@@ -29,30 +29,37 @@ public class AdminController {
     private IRoleService iRoleService;
     @Autowired
     private PasswordEncoder passwordEncoder;
-    private User getPrincipal(){
+
+
+    @ModelAttribute("isAdmin")
+    public boolean checkAdmin() {
+        boolean isAdmin = false;
+        if (getPrincipal() != null) {
+            for (Role role : getPrincipal().getRoles()) {
+                if (role.getName().equals("ROLE_ADMIN")) {
+                    isAdmin = true;
+                }
+            }
+        }
+        return isAdmin;
+    }
+
+    @ModelAttribute("userCurrent")
+    public User getPrincipal() {
         User userCurrent = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal.equals("anonymousUser")) {
+            return null;
+        }
         UserPrinciple userPrinciple = (UserPrinciple) principal;
-         userCurrent = iUserService.findByUserName(userPrinciple.getUsername());
-         return userCurrent;
+        userCurrent = iUserService.findByUserName(userPrinciple.getUsername());
+        return userCurrent;
     }
 
     @ModelAttribute("listRole")
     public Iterable<Role> listRole() {
         return iRoleService.findAll();
     }
-
-    @ModelAttribute("isAdmin")
-    public boolean checkAdmin(){
-        boolean isAdmin = false;
-        for (Role role: getPrincipal().getRoles()){
-            if (role.getName().equals("ROLE_ADMIN")){
-                isAdmin = true;
-            }
-        }
-        return isAdmin;
-    }
-
 
     @GetMapping("/list-user")
     public ModelAndView listUser(){

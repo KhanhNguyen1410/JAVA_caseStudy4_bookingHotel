@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -50,24 +51,25 @@ public class RoomController {
     }
 
     @ModelAttribute("isAdmin")
-    public boolean checkAdmin(){
+    public boolean checkAdmin() {
         boolean isAdmin = false;
-        for (Role role: getPrincipal().getRoles()){
-            if (role.getName().equals("ROLE_ADMIN")){
-                isAdmin = true;
+        if (getPrincipal() != null) {
+            for (Role role : getPrincipal().getRoles()) {
+                if (role.getName().equals("ROLE_ADMIN")) {
+                    isAdmin = true;
+                }
             }
         }
         return isAdmin;
     }
-//    @ModelAttribute("allComment")
-//    public Page<Comment> comments(){
-//        return iCommentService.findAllByHotelId();
-//    }
 
     @ModelAttribute("userCurrent")
-    public User getPrincipal(){
+    public User getPrincipal() {
         User userCurrent = null;
         Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        if (principal.equals("anonymousUser")) {
+            return null;
+        }
         UserPrinciple userPrinciple = (UserPrinciple) principal;
         userCurrent = iUserService.findByUserName(userPrinciple.getUsername());
         return userCurrent;

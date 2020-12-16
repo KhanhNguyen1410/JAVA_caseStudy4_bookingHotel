@@ -35,7 +35,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests().antMatchers("/", "/login","/home", "/createNewUser").permitAll()
+        http.authorizeRequests().antMatchers("/", "/login","/home", "/create-user").permitAll()
                 .antMatchers("/user/**").access("hasRole('ROLE_USER') or hasRole('ROLE_ADMIN')")
                 .antMatchers("/admin/**").access("hasRole('ROLE_ADMIN')")
 //        .antMatchers("/host").access("hasRole('ROLE_HOST') or hasRole('ROLE_ADMIN')")
@@ -48,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/login?error=true")//
                 .usernameParameter("username")//
                 .passwordParameter("password")
-                .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+//                .and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
                 // Cấu hình cho Logout Page.
                 .and().logout().logoutUrl("/logout").logoutSuccessUrl("/logoutSuccessful");
         // Cấu hình Remember Me.

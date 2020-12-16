@@ -1,30 +1,468 @@
 <!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Login</title>
+    <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!--    <link rel="stylesheet" href="views/logincss.css">-->
+<!--    <script src="views/loginjs.js"></script>-->
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Mukta');
+        body{
+            font-family: 'Mukta', sans-serif;
+            height:100vh;
+            min-height:550px;
+            background-image: url(http://www.planwallpaper.com/static/images/Free-Wallpaper-Nature-Scenes.jpg);
+            background-repeat: no-repeat;
+            background-size:cover;
+            background-position:center;
+            position:relative;
+            overflow-y: hidden;
+        }
+        a{
+            text-decoration:none;
+            color:#444444;
+        }
+        .login-reg-panel{
+            position: relative;
+            top: 50%;
+            transform: translateY(-50%);
+            text-align:center;
+            width:70%;
+            right:0;left:0;
+            margin:auto;
+            height:400px;
+            background-color: rgba(236, 48, 20, 0.9);
+        }
+        .white-panel{
+            background-color: rgba(255,255, 255, 1);
+            height:500px;
+            position:absolute;
+            top:-50px;
+            width:50%;
+            right:calc(50% - 50px);
+            transition:.3s ease-in-out;
+            z-index:0;
+            box-shadow: 0 0 15px 9px #00000096;
+        }
+        .login-reg-panel input[type="radio"]{
+            position:relative;
+            display:none;
+        }
+        .login-reg-panel{
+            color:#B8B8B8;
+        }
+        .login-reg-panel #label-login,
+        .login-reg-panel #label-register{
+            border:1px solid #9E9E9E;
+            padding:5px 5px;
+            width:150px;
+            display:block;
+            text-align:center;
+            border-radius:10px;
+            cursor:pointer;
+            font-weight: 600;
+            font-size: 18px;
+        }
+        .login-info-box{
+            width:30%;
+            padding:0 50px;
+            top:20%;
+            left:0;
+            position:absolute;
+            text-align:left;
+        }
+        .register-info-box{
+            width:30%;
+            padding:0 50px;
+            top:20%;
+            right:0;
+            position:absolute;
+            text-align:left;
+
+        }
+        .right-log{right:50px !important;}
+
+        .login-show,
+        .register-show{
+            z-index: 1;
+            display:none;
+            opacity:0;
+            transition:0.3s ease-in-out;
+            color:#242424;
+            text-align:left;
+            padding:50px;
+        }
+        .show-log-panel{
+            display:block;
+            opacity:0.9;
+        }
+        .login-show input[type="text"], .login-show input[type="password"]{
+            width: 100%;
+            display: block;
+            margin:20px 0;
+            padding: 15px;
+            border: 1px solid #b5b5b5;
+            outline: none;
+        }
+        .login-show input[type="button"] {
+            max-width: 150px;
+            width: 100%;
+            background: #444444;
+            color: #f9f9f9;
+            border: none;
+            padding: 10px;
+            text-transform: uppercase;
+            border-radius: 2px;
+            float:right;
+            cursor:pointer;
+        }
+        .login-show a{
+            display:inline-block;
+            padding:10px 0;
+        }
+
+        .register-show input[type="text"], .register-show input[type="password"]{
+            width: 100%;
+            display: block;
+            margin:20px 0;
+            padding: 15px;
+            border: 1px solid #b5b5b5;
+            outline: none;
+        }
+        .register-show input[type="button"] {
+            max-width: 150px;
+            width: 100%;
+            background: #444444;
+            color: #f9f9f9;
+            border: none;
+            padding: 10px;
+            text-transform: uppercase;
+            border-radius: 2px;
+            float:right;
+            cursor:pointer;
+        }
+        .credit {
+            position:absolute;
+            bottom:10px;
+            left:10px;
+            color: #3B3B25;
+            margin: 0;
+            padding: 0;
+            font-family: Arial,sans-serif;
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            z-index: 99;
+        }
+        a{
+            text-decoration:none;
+            color:#2c7715;
+        }
+    </style>
+    <script>
+
+        $(document).ready(function(){
+            $('.login-info-box').fadeOut();
+            $('.login-show').addClass('show-log-panel');
+        });
+
+
+        $('.login-reg-panel input[type="radio"]').on('change', function() {
+            if($('#log-login-show').is(':checked')) {
+                $('.register-info-box').fadeOut();
+                $('.login-info-box').fadeIn();
+
+                $('.white-panel').addClass('right-log');
+                $('.register-show').addClass('show-log-panel');
+                $('.login-show').removeClass('show-log-panel');
+
+            }
+            else if($('#log-reg-show').is(':checked')) {
+                $('.register-info-box').fadeIn();
+                $('.login-info-box').fadeOut();
+
+                $('.white-panel').removeClass('right-log');
+
+                $('.login-show').addClass('show-log-panel');
+                $('.register-show').removeClass('show-log-panel');
+            }
+        });
+
+    </script>
 </head>
 <body>
 <h1>Login</h1>
 <h3>Enter user name and password:</h3>
-<form name='f' th:action="@{/j_spring_security_check}" method='POST'>
-    <table>
-        <tr>
-            <td>User:</td>
-            <td><input type='text' name='username' value=''></td>
-        </tr>
-        <tr>
-            <td>Password:</td>
-            <td><input type='password' name='password' /></td>
-        </tr>
-        <tr>
-            <td>Remember Me?</td>
-            <td><input type="checkbox" name="remember-me" /></td>
-        </tr>
-        <tr>
-            <td><input name="submit" type="submit" value="submit" /></td>
-        </tr>
-    </table>
-</form>
-<br>
+<div class="login-reg-panel">
+    <div class="login-info-box">
+        <h2>Have an account?</h2>
+        <p>Lorem ipsum dolor sit amet</p>
+        <label id="label-register" for="log-reg-show">Login</label>
+        <input type="radio" name="active-log-panel" id="log-reg-show" checked="checked">
+    </div>
+    <div class="register-info-box">
+        <h2>Don't have an account?</h2>
+        <p>Lorem ipsum dolor sit amet</p>
+        <label id="label-login" for="log-login-show">Register</label>
+        <input type="radio" name="active-log-panel" id="log-login-show">
+    </div>
+
+    <div class="white-panel">
+        <form name='f' th:action="@{/j_spring_security_check}" method='POST'>
+            <div class="login-show">
+                <h2>LOGIN</h2>
+                <input type="text" name="username" placeholder="Email">
+                <input type="password" name="password" placeholder="Password">
+                <div th:if="${#request.getParameter('error') == 'true'}"
+                     style="color:red;margin:10px 0px;">
+                    Login Failed!!!<br/>
+                    Reason :
+                    <span th:if="${#session!= null and #session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION') != null}"
+                          th:utext="${#session.getAttribute('SPRING_SECURITY_LAST_EXCEPTION').message}">
+       Static summary
+</span>
+                </div>
+                <input class="btn btn-success" type="submit" value="Login">
+                <a th:href="@{/forgot-password}">Forgot password?</a>
+            </div>
+        </form>
+            <div class="register-show">
+                <h2>REGISTER</h2>
+                <input type="text" placeholder="Email">
+                <input type="password" placeholder="Password">
+                <input type="password" placeholder="Confirm Password">
+
+                <a th:href="@{/create-user}"><input type="button" value="Register"></a>
+            </div>
+
+    </div>
+</div>
+<div class="modal fade" id="modalLRForm" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog cascading-modal" role="document">
+        <!--Content-->
+        <div class="modal-content">
+
+            <!--Modal cascading tabs-->
+            <div class="modal-c-tabs">
+
+                <!-- Nav tabs -->
+                <ul class="nav nav-tabs md-tabs tabs-2 light-blue darken-3" role="tablist">
+                    <li class="nav-item">
+                        <a class="nav-link active" data-toggle="tab" href="#panel7" role="tab"><i
+                                class="fas fa-user mr-1"></i>
+                            Login</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" data-toggle="tab" href="#panel8" role="tab"><i
+                                class="fas fa-user-plus mr-1"></i>
+                            Register</a>
+                    </li>
+                </ul>
+
+                <!-- Tab panels -->
+                <div class="tab-content">
+                    <!--Panel 7-->
+                    <div class="tab-pane fade in show active" id="panel7" role="tabpanel">
+                        <form name='f' th:action="@{/j_spring_security_check}" method='POST'>
+                            <div class="modal-body mb-1">
+                                <div class="md-form form-sm mb-5">
+                                    <i class="fas fa-envelope prefix"></i>
+                                    <label data-error="wrong" data-success="right" for="modalLRInput10">Account
+                                        :</label>
+                                    <input type="text" id="modalLRInput10" name="username" class="form-control form-control-sm validate"
+                                           placeholder="Tên Đăng Nhập" maxlength="50">
+                                </div>
+
+                                <div class="md-form form-sm mb-4">
+                                    <i class="fas fa-lock prefix"></i>
+                                    <label data-error="wrong" data-success="right" for="modalLRInput11">Password
+                                        :</label>
+                                    <input type="password" name="password" id="modalLRInput11"
+                                           class="form-control form-control-sm validate"
+                                           placeholder="Nhập Mật Khẩu"maxlength="50">
+                                </div>
+                                <div class="text-center mt-2">
+                                    <button class="btn btn-info">Log in <i class="fas fa-sign-in ml-1"></i></button>
+                                </div>
+                            </div>
+
+                        </form>
+                        <!--Footer-->
+                        <div class="modal-footer">
+                            <div class="options text-center text-md-right mt-1">
+                                <p>Not a member? <a href="#" class="blue-text">Sign Up</a></p>
+                                <p>Forgot <a href="#" class="blue-text">Password?</a></p>
+                            </div>
+                            <button type="button" class="btn btn-outline-info waves-effect ml-auto"
+                                    data-dismiss="modal">Close
+                            </button>
+                        </div>
+
+                    </div>
+                    <!--/.Panel 7-->
+
+                    <!--Panel 8-->
+                    <div class="tab-pane fade" id="panel8" role="tabpanel">
+
+                        <!--Body-->
+                        <div class="modal-body">
+                            <form th:action="@{/create-user}" method="post" th:object="${user}">
+                                <div>
+                                    <div>
+                                        <label class="text_color">FullName</label>
+                                        <div>
+                                            <p>
+                                                <input type="text" maxlength="40" tabindex="1"
+                                                       th:field="*{fullName}">
+                                            </p>
+                                            <p th:if="${#fields.hasErrors('fullName')}" th:errors="*{fullName}">Name
+                                                Error/p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="text_color">Phone</label>
+                                        <div>
+                                            <p><input type="text" maxlength="40" tabindex="1" th:field="*{phone}"
+                                                      placeholder=""></p>
+                                            <p th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}">Name Error</p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label>Tỉnh/Thành phố:</label>
+                                        <div>
+                                            <select th:field="*{address}">
+                                                <option th:value="-1">--Tỉnh/Thành phố--</option>
+                                                <option th:value="31">An Giang</option>
+                                                <option th:value="37">Bà Rịa Vũng Tàu</option>
+                                                <option th:value="33">Bình Dương</option>
+                                                <option th:value="35">Bình Phước</option>
+                                                <option th:value="28">Bình Thuận</option>
+                                                <option th:value="32">Bình Định</option>
+                                                <option th:value="34">Bạc Liêu</option>
+                                                <option th:value="6">Bắc Cạn</option>
+                                                <option th:value="12">Bắc Giang</option>
+                                                <option th:value="13">Bắc Ninh</option>
+                                                <option th:value="36">Bến Tre</option>
+                                                <option th:value="2">Cao Bằng</option>
+                                                <option th:value="38">Cà Mau</option>
+                                                <option th:value="30">Cần Thơ</option>
+                                                <option th:value="40">Đà Nẵng</option>
+                                                <option th:value="39">Đăk Lăk</option>
+                                                <option th:value="64">Điện Biên</option>
+                                                <option th:value="29">Đồng Nai</option>
+                                                <option th:value="41">Đồng Tháp</option>
+                                                <option th:value="42">Gia Lai</option>
+                                                <option th:value="1">Hà Giang</option>
+                                                <option th:value="18">Hà Nam</option>
+                                                <option th:value="43">Hà Nội</option>
+                                                <option th:value="14">Hà Tây</option>
+                                                <option th:value="46">Hà Tĩnh</option>
+                                                <option th:value="62">Hà Đông</option>
+                                                <option th:value="17">Hòa Bình</option>
+                                                <option th:value="16">Hưng Yên</option>
+                                                <option th:value="63">Hạ Long</option>
+                                                <option th:value="15">Hải Dương</option>
+                                                <option th:value="45">Hải Phòng</option>
+                                                <option th:value="44">Hồ Chí Minh</option>
+                                                <option th:value="48">Khánh Hòa</option>
+                                                <option th:value="47">Kiên Giang</option>
+                                                <option th:value="49">KonTum</option>
+                                                <option th:value="3">Lai Châu</option>
+                                                <option th:value="50">Long An</option>
+                                                <option th:value="4">Lào Cai</option>
+                                                <option th:value="51">Lâm Đồng</option>
+                                                <option th:value="52">Lạng Sơn</option>
+                                                <option th:value="19">Nam Định</option>
+                                                <option th:value="53">Nghệ An</option>
+                                                <option th:value="21">Ninh Bình</option>
+                                                <option th:value="54">Ninh Thuận</option>
+                                                <option th:value="10">Phú Thọ</option>
+                                                <option th:value="26">Phú Yên</option>
+                                                <option th:value="22">Quảng Bình</option>
+                                                <option th:value="55">Quảng Nam</option>
+                                                <option th:value="25">Quảng Ngãi</option>
+                                                <option th:value="56">Quảng Ninh</option>
+                                                <option th:value="23">Quảng Trị</option>
+                                                <option th:value="57">Sóc Trăng</option>
+                                                <option th:value="9">Sơn La</option>
+                                                <option th:value="59">Thanh Hóa</option>
+                                                <option th:value="20">Thái Bình</option>
+                                                <option th:value="7">Thái Nguyên</option>
+                                                <option th:value="24">Thừa Thiên Huế</option>
+                                                <option th:value="58">Tiền Giang</option>
+                                                <option th:value="60">Trà Vinh</option>
+                                                <option th:value="5">Tuyên Quang</option>
+                                                <option th:value="27">Tây Ninh</option>
+                                                <option th:value="61">Vĩnh Long</option>
+                                                <option th:value="11">Vĩnh Phúc</option>
+                                                <option th:value="8">Yên Bái</option>
+                                                <option th:value="65">Nơi khác</option>
+                                            </select>
+                                            <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}">Name
+                                                Error</p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="text_color">Age : </label>
+                                        <div>
+                                            <p><input type="text" maxlength="40" tabindex="1" th:field="*{age}"
+                                                      placeholder=""></p>
+                                            <p th:if="${#fields.hasErrors('phone')}" th:errors="*{age}">Name Error</p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="text_color">Email : </label>
+                                        <div>
+                                            <p><input type="text" maxlength="40" tabindex="1" th:field="*{email}"
+                                                      placeholder=""></p>
+                                            <p th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Name Error</p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="text_color">userName</label>
+                                        <div>
+                                            <p><input type="text" maxlength="40" tabindex="1" th:field="*{username}">
+                                            </p>
+                                            <p th:if="${#fields.hasErrors('userName')}" th:errors="*{userName}">Name
+                                                Error</p>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label class="text_color">password</label>
+                                        <div>
+                                            <p><input type="password" maxlength="40" tabindex="1" placeholder=""
+                                                      th:field="*{password}"></p>
+                                            <p th:if="${#fields.hasErrors('passWord')}" th:errors="*{passWord}">Name
+                                                Error</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                </fieldset>
+                            </form>
+                            <div class="modal-footer">
+                                <div class="options text-right">
+                                    <p class="pt-1">Already have an account? <a href="#" class="blue-text">Log In</a>
+                                    </p>
+                                </div>
+                                <button type="button" class="btn btn-outline-info waves-effect ml-auto"
+                                        data-dismiss="modal">
+                                    Close
+                                </button>
+                            </div>
+
+                        </div>
+                        <!--Footer-->
+                    </div>
+                    <!--/.Panel 8-->
+                </div>
+
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
 </body>
 </html>
