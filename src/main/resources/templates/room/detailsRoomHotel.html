@@ -4,12 +4,80 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+            crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            crossorigin="anonymous"></script>
     <style>
+        .img {
+            overflow: hidden;
+            margin: auto;
+            perspective: 1000px;
+            -webkit-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+            -moz-box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+            box-shadow: 0px 0px 5px 0px rgba(0, 0, 0, 0.75);
+            border-radius: 5px;
+        }
+
+        .carousel-item {
+            height: 650px;
+        }
+
+        .img > img {
+            transition: 0.6s;
+            width: 100%;
+            height: 400px;
+        }
+
+        .img > a > img {
+            transition: 0.6s;
+            width: 100%;
+            height: 400px;
+        }
+
+        .img:hover img {
+            transform: scale(1.2);
+        }
+
+        .content, .chunho {
+            position: absolute;
+            z-index: 3;
+            top: 100%;
+            left: 10%;
+            transition: 0.6s;
+            opacity: 0;
+        }
+
+        .img:hover .content {
+            transform: translateY(-260px);
+            color: white;
+            text-shadow: 2px 2px #000;
+            font-size: 25px;
+            opacity: 1;
+        }
+
+        .abc {
+            margin-bottom: 100px;
+        }
+
+        /*body {*/
+        /*    background: #fcc3a6;*/
+        /*}*/
+
+        /*.navbar{*/
+        /*    position: fixed;*/
+        /*    top: 0;*/
+        /*    width:   100%;*/
+        /*}*/
         div.stars {
+
         }
 
         a.star {
@@ -35,78 +103,7 @@
         .blue {
             color: #0faef1;
         }
-    </style>
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var rate;
-            //star
-            /*
-            * Hiệu ứng khi rê chuột lên ngôi sao
-            */
-            $('a.star').mouseenter(function () {
-                if ($('#cate-rating').hasClass('rating-ok') == false) {
-                    rate = $(this).attr('id');
-                    rate = rate.split('-').splice(-1);
-                    $('a.star').removeClass('vote-active');
-                    for (var i = 1; i <= rate; i++) {
-                        $('#star-' + i).addClass('vote-hover');
-                    }
-                }
-            }).mouseleave(function () {
-                if ($('#cate-rating').hasClass('rating-ok') == false) {
-                    $('a.star').removeClass('vote-hover');
-                }
-            });
-            $('a.star').click(function() {
-                if ($('#cate-rating').hasClass('rating-ok') == false) {
-                    rate = $(this).attr('id');
-                    rate = rate.split('-').splice(-1).toString();
-                    for (var i = 1; i <= rate; i++) {
-                        $('#star-' + i).addClass('vote-active');
 
-                    }
-                    $('p#vote-desc').html('<span class="blue">' + rate);
-                    $('#cate-rating').addClass('rating-ok');
-                }
-            });
-            //end star
-            $('#formComment').submit(function (event) { // là funtion được gọi khi submit from có id là newSmartphoneForm
-                var content = $('#content').val();
-                var hotel = $('#hotel').val();
-                var user = $('#user').val();// thực hiện lấy dữ liệu từ các input tương ứng
-                var json = {
-                    "hotel_id": parseInt(hotel),
-                    "user_id": parseInt(user),
-                    "content": content,
-                    "rate":rate
-                };// gán các biến vào các trường tương ứng của đối tượng json.
-                $.ajax({
-                    headers: {
-                        'Accept': 'application/json',
-                        'Content-Type': 'application/json'
-                    },
-                    type: "POST", // method
-                    data: JSON.stringify(json),
-                    url: "/create-comment", //link này ở RequestMapping
-                    success: function (comment) { // reponse này ở requestBody
-                        var respContent = "";
-                        respContent += "<div><span>";
-                        respContent += comment.user.fullName + "</span></div>";
-                        respContent += "<div><span> ";
-                        respContent += comment.content + "</span></div>";
-                        // $("#allComment").html(respContent);
-                        $("#allComment").prepend(respContent);
-                        $("#content").val("");
-                    }, error: function () {
-                        console.log(this.error);
-                    }
-                });
-                console.log(json)
-                event.preventDefault();
-            });
-        });
-    </script>
-    <style>
         * {
             margin: 0;
             padding: 0;
@@ -154,44 +151,145 @@
             color: #c59b08;
         }
     </style>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var rate;
+            //star
+            /*
+            * Hiệu ứng khi rê chuột lên ngôi sao
+            */
+            $('a.star').mouseenter(function () {
+                if ($('#cate-rating').hasClass('rating-ok') == false) {
+                    rate = $(this).attr('id');
+                    rate = rate.split('-').splice(-1);
+                    $('a.star').removeClass('vote-active');
+                    for (var i = 1; i <= rate; i++) {
+                        $('#star-' + i).addClass('vote-hover');
+                    }
+                }
+            }).mouseleave(function () {
+                if ($('#cate-rating').hasClass('rating-ok') == false) {
+                    $('a.star').removeClass('vote-hover');
+                }
+            });
+            $('a.star').click(function () {
+                if ($('#cate-rating').hasClass('rating-ok') == false) {
+                    rate = $(this).attr('id');
+                    rate = rate.split('-').splice(-1).toString();
+                    for (var i = 1; i <= rate; i++) {
+                        $('#star-' + i).addClass('vote-active');
+
+                    }
+                    $('p#vote-desc').html('<span class="blue">' + rate);
+                    $('#cate-rating').addClass('rating-ok');
+                }
+            });
+            //end star
+            $('#formComment').submit(function (event) { // là funtion được gọi khi submit from có id là newSmartphoneForm
+                var content = $('#content').val();
+                var hotel = $('#hotel').val();
+                var user = $('#user').val();// thực hiện lấy dữ liệu từ các input tương ứng
+                var json = {
+                    "hotel_id": parseInt(hotel),
+                    "user_id": parseInt(user),
+                    "content": content,
+                    "rate": rate
+                };// gán các biến vào các trường tương ứng của đối tượng json.
+                $.ajax({
+                    headers: {
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                    type: "POST", // method
+                    data: JSON.stringify(json),
+                    url: "/create-comment", //link này ở RequestMapping
+                    success: function (comment) { // reponse này ở requestBody
+                        var respContent = "";
+                        respContent += "<div><span>";
+                        respContent += comment.user.fullName + "</span></div>";
+                        respContent += "<div><span> ";
+                        respContent += comment.content + comment.rate+ "</span></div>";
+                        // $("#allComment").html(respContent);
+                        $("#allComment").prepend(respContent);
+                        $("#content").val("");
+                    }, error: function () {
+                        console.log(this.error);
+                    }
+                });
+                console.log(json)
+                event.preventDefault();
+            });
+        });
+    </script>
+
 </head>
 <body>
+<nav th:replace="/home :: nav"></nav>
 <h3><a th:if="${isAdmin}" th:href="@{/admin/create-room/__${id_details}__}">tạo room</a></h3>
 <h3><a th:href="@{/home}">Trang chủ</a></h3>
 
-<table class="table table-active" border="1px">
-    <tr>
-        <th>Name</th>
-        <th>Image</th>
-        <th>Price</th>
-        <th>Description</th>
-        <th>Hotel</th>
-        <th>Type</th>
-        <!--            <th>User Host</th>-->
-        <th>Action</th>
-        <th>Status</th>
-    </tr>
-    <tr th:each="room : ${rooms}">
-        <td th:text="${room.name}"></td>
-        <td><a th:href="@{/user/room-details/__${room.id}__}"><img th:src="@{'http://localhost:8080/' + ${room.image}}"
-                                                                   style="height: 150px;width: 150px"></a></td>
-        <td th:text="${room.price}"></td>
-        <td th:text="${room.description}"></td>
-        <td th:text="${room.hotel.name}"></td>
-        <td th:text="${room.typeRoom.name}"></td>
-        <td><a class="btn btn-success" th:href="@{/user/create-booking/__${room.id}__}">Booking</a></td>
-    </tr>
-</table>
-<div class="row">
-    <div id="allComment">
-        <th:block th:each="comment : ${allComment}">
-            <label th:text="${comment.user.fullName}"></label>
-            <span th:text="${comment.rate}"></span><br>
-            <div>
-                <span th:text="${comment.content}"></span>
+
+<div class="container">
+    <!--    phần các khách sạn-->
+<!--    <div><span><strong>Các khách sạn nổi bật</strong></span></div>-->
+    <div class="row">
+        <th:block th:each="room : ${rooms}">
+            <div class="col-md-4 mt-5 abc">
+                <div class="img">
+                    <a th:href="@{/user/room-details/__${room.id}__}"><img width="100%" th:src="@{'http://localhost:8080/' + ${room.image}}"></a>
+                    <div class="content">
+                        <span th:text="${room.name}"></span><br>
+                        <span th:text="${room.price}"></span><br>
+                        <span th:text="${room.description}"></span><br>
+<!--                        <span th:text="${room.hotel.name}"></span><br>-->
+                        <span th:text="${room.typeRoom.name}"></span><br>
+                        <span><a class="btn btn-success" th:href="@{/user/create-booking/__${room.id}__}">Booking</a></span>
+                    </div>
+                </div>
             </div>
-            <br>
         </th:block>
+<!--        <div class="pagination">-->
+<!--            <a th:href="@{'/home'(page=${list.number - 1})}" th:if="${list.hasPrevious()}">Previous</a>-->
+<!--            <span th:text="${list.number + 1}"></span>/<span th:text="${list.totalPages}"></span>-->
+<!--            <a th:href="@{'/home'(page=${list.number + 1})}" th:if="${list.hasNext()}">Next</a>-->
+<!--        </div>-->
+    </div>
+</div>
+<!--<table class="table table-active" border="1px">-->
+<!--    <tr>-->
+<!--        <th>Name</th>-->
+<!--        <th>Image</th>-->
+<!--        <th>Price</th>-->
+<!--        <th>Description</th>-->
+<!--        <th>Hotel</th>-->
+<!--        <th>Type</th>-->
+<!--        &lt;!&ndash;            <th>User Host</th>&ndash;&gt;-->
+<!--        <th>Action</th>-->
+<!--        <th>Status</th>-->
+<!--    </tr>-->
+<!--    <tr th:each="room : ${rooms}">-->
+<!--        <td th:text="${room.name}"></td>-->
+<!--        <td><a th:href="@{/user/room-details/__${room.id}__}"><img th:src="@{'http://localhost:8080/' + ${room.image}}"-->
+<!--                                                                   style="height: 150px;width: 150px"></a></td>-->
+<!--        <td th:text="${room.price}"></td>-->
+<!--        <td th:text="${room.description}"></td>-->
+<!--        <td th:text="${room.hotel.name}"></td>-->
+<!--        <td th:text="${room.typeRoom.name}"></td>-->
+<!--        <td><a class="btn btn-success" th:href="@{/user/create-booking/__${room.id}__}">Booking</a></td>-->
+<!--    </tr>-->
+<!--</table>-->
+<div class="row">
+    <div class="container">
+        <div id="allComment">
+            <th:block th:each="comment : ${allComment}">
+                <label th:text="${comment.user.fullName}"></label>
+                <span th:text="${comment.rate}"></span><br>
+                <div>
+                    <span th:text="${comment.content}"></span>
+                </div>
+                <br>
+            </th:block>
+        </div>
     </div>
 </div>
 <div class="row">

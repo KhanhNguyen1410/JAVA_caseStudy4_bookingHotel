@@ -94,7 +94,7 @@ public class HomeController {
         return "admin";
     }
 
-    @GetMapping("/logout")
+    @GetMapping("/logoutSuccessfully")
     public String logoutPage(Model model) {
         model.addAttribute("message", "Đăng xuất thành công");
         return "logout";
@@ -108,7 +108,7 @@ public class HomeController {
     @GetMapping("/")
     public String homePage(Model model, Pageable pageable) {
         model.addAttribute("user", new User());
-        return "index";
+        return "home";
     }
 
     @GetMapping("/accessDenied")

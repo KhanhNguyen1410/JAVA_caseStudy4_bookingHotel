@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:fragment="head">
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
@@ -40,7 +40,7 @@
         .img:hover img {
             transform: scale(1.2);
         }
-        .chuto, .chunho {
+        .content, .chunho {
             position: absolute;
             z-index: 3;
             top: 100%;
@@ -48,7 +48,7 @@
             transition: 0.6s;
             opacity: 0;
         }
-        .img:hover .chuto {
+        .img:hover .content {
             transform: translateY(-220px);
             color: white;
             text-shadow: 2px 2px #000;
@@ -58,9 +58,9 @@
         .abc {
             margin-bottom: 100px;
         }
-        body {
-            background: #fcc3a6;
-        }
+        /*body {*/
+        /*    background: #fcc3a6;*/
+        /*}*/
         /*.navbar{*/
         /*    position: fixed;*/
         /*    top: 0;*/
@@ -69,7 +69,7 @@
     </style>
 </head>
 <body>
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav th:fragment="nav" class="navbar navbar-expand-lg navbar-light bg-light">
     <a class="navbar-brand" href="#"></a>
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -78,7 +78,7 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
             <li class="nav-item active">
-                <a class="nav-link" th:href="@{/home}"><img style="height: 50px ; width: 100px" th:src="@{../static/logoM4.JPG}"> <span class="sr-only">(current)</span></a>
+                <a class="nav-link" th:href="@{/home}"><a th:href="@{/home}"><img style="height: 50px ; width: 100px" th:src="@{../static/logoM4.JPG}"></a> <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="#">Help</a>
@@ -86,6 +86,9 @@
             <li class="nav-item dropdown">
                 <a th:if="${userCurrent}" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                    hello <span th:text="${userCurrent.fullName}"></span>
+                </a>
+                <a th:unless="${userCurrent}" class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <span>Đăng nhập/Đăng kí</span>
                 </a>
                 <div th:if="${isAdmin}" class="dropdown-menu" aria-labelledby="navbarDropdown">
                     <a class="dropdown-item" th:href="@{/admin/list-user}">Quản lý user</a>
@@ -96,6 +99,11 @@
                     <a class="dropdown-item" href="#">Something else here</a>
                 </div>
                 <div th:unless="${isAdmin}" class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <div th:unless="${userCurrent}">
+                        <a class="dropdown-item" th:href="@{/login}">Đăng nhập</a>
+                        <a class="dropdown-item" th:href="@{/create-user}">Đăng kí</a>
+                    </div>
+                    <div th:if="${userCurrent}">
                     <a class="dropdown-item" th:href="@{/logout}">Đăng xuất</a>
                     <a class="dropdown-item"><form th:action="@{/user/edit-user/__${userCurrent.id}__}" method="post">
                         <input type="submit" value="Tài Khoản">
@@ -103,6 +111,7 @@
                     <a class="dropdown-item" th:href="@{/user/list-hotelUser/__${userCurrent.id}__}">Host</a>
                     <div class="dropdown-divider"></div>
                     <a class="dropdown-item" href="#">Something else here</a>
+                    </div>
                 </div>
             </li>
             <li class="nav-item">
@@ -115,7 +124,7 @@
         </form>
     </div>
 </nav>
-<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+<div th:fragment="slide" id="carouselExampleControls" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">
             <img class="d-block w-100" width="100%" height="100%" th:src="@{https://img.lovepik.com/photo/50081/0167.jpg_wh860.jpg}" alt="First slide">
@@ -139,12 +148,42 @@
 <div class="container">
 <div class="container">
 <!--    phần các thành phố-->
+    <div><span><strong>Các thành phố nổi bật</strong></span></div>
     <div class="row">
         <div class="col-md-3 mt-5 abc">
             <div class="img">
-                <img src="https://d2e5ushqwiltxm.cloudfront.net/wp-content/uploads/sites/95/2016/12/07092746/HotelMetropoleHanoi_003_LaTerrasse_du_Metropole-585x390.jpg" width="100%" alt="">
-                <div class="chuto">1000 Như Anh Louis<br>100$</div>
-                <div class="chunho">Hello qwerty uiop asdfg hjkl zxcv bnm</div>
+                <img th:src="@{https://cdn.luxstay.com/home/location/location_1_1559734709.png}" width="100%" alt="">
+                <div class="content">
+                    <span style="color: #52f30b">Hà Nội</span><br>
+                    <span>Hội tụ dân chơi thủ đô</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mt-5 abc">
+            <div class="img">
+                <img th:src="@{https://cdn.luxstay.com/home/location/location_16_1559303173.png}" width="100%" alt="">
+                <div class="content">
+                    <span style="color: #52f30b">Đà Nẵng</span><br>
+                    <span>Nơi tình yêu bắt đầu</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mt-5 abc">
+            <div class="img">
+                <img th:src="@{https://cdn.luxstay.com/home/location/location_5_1559735011.png}" width="100%" alt="">
+                <div class="content">
+                    <span style="color: #52f30b">TP Hồ Chí Minh</span><br>
+                    <span>Không chịu ngủ anh như sài gòn</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3 mt-5 abc">
+            <div class="img">
+                <img th:src="@{https://cdn.luxstay.com/home/location/location_6_1559786202.png}" width="100%" alt="">
+                <div class="content">
+                    <span style="color: #52f30b">Hà Tĩnh</span><br>
+                    <span>Mảnh đất anh hùng :)</span>
+                </div>
             </div>
         </div>
     </div>
@@ -152,19 +191,25 @@
 
 <div class="container">
 <!--    phần các khách sạn-->
+    <div><span><strong>Các khách sạn nổi bật</strong></span></div>
     <div class="row">
         <th:block th:each="hotel : ${list}">
         <div class="col-md-4 mt-5 abc">
             <div class="img">
                 <a th:href="@{/user/details-hotel/__${hotel.id}__}"><img width="100%" th:src="@{'http://localhost:8080/' + ${hotel.image}}" class="img-responsive"
                                                                          alt="Image"></a>
-                <div class="chuto">
+                <div class="content">
                     <span th:text="${hotel.name}"></span><br>
                     <span th:text="${hotel.description}"></span><br>
                 </div>
             </div>
         </div>
         </th:block>
+        <div class="pagination">
+            <a th:href="@{'/home'(page=${list.number - 1})}" th:if="${list.hasPrevious()}">Previous</a>
+            <span th:text="${list.number + 1}"></span>/<span th:text="${list.totalPages}"></span>
+            <a th:href="@{'/home'(page=${list.number + 1})}" th:if="${list.hasNext()}">Next</a>
+        </div>
     </div>
 </div>
 </div>
