@@ -13,5 +13,6 @@ public interface IHotelService extends GeneralService<Hotel> {
     Page<Hotel> findAllByProvince(Long id, Pageable pageable);
     Page<Hotel> findAllByUser(Long id, Pageable pageable);
 //    Page<Hotel> findAllByNameContaining(String name);
+Page<Hotel> findAllByNameContaining(String name, Pageable pageable);
 
 }

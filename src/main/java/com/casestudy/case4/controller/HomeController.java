@@ -128,4 +128,13 @@ public class HomeController {
         model.addAttribute("message","Truy cập không khả dụng");
         return "home";
     }
+    @PostMapping("/search-hotel")
+    public ModelAndView searchHotel(@RequestParam("search-hotel") String name, Pageable pageable){
+        Page<Hotel> hotels= iHotelService.findAllByNameContaining(name,pageable);
+        ModelAndView modelAndView= new ModelAndView("home");
+        modelAndView.addObject("list", hotels);
+        modelAndView.addObject("user",new User());
+//        modelAndView.addObject("userCurrent",getPrincipal());
+        return modelAndView;
+    }
 }
